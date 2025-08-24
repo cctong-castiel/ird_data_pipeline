@@ -1,5 +1,7 @@
 import scrapy
 from scrapy.crawler import CrawlerProcess
+import html2text
+
 
 class IrdTableSpider(scrapy.Spider):
     name = "ird_table_spider"
@@ -28,14 +30,48 @@ class IrdTableSpider(scrapy.Spider):
                 'index': [item.strip() for item in index_items],
             }
 
-def run_spider():
+class IrdCaseContentSpider(scrapy.Spider):
+    name = "ird_case_content_spider"
+    start_urls = [f'https://www.ird.gov.hk/eng/ppr/advance{i}.htm' for i in [13, 16, 26, 44]]
+
+    def parse(self, response):
+
+        html_content = response.css('div#content').get()
+
+        if html_content:
+            # convert HTML to Markdown
+            h = html2text.HTML2Text()
+            h.ignore_links = False  # Set to True if you want to ignore links
+            markdown_content = h.handle(html_content)
+
+            # define filename
+            filename = response.url.split("/")[-1].replace(".htm", ".md")
+            with open(f'tests/output_files/ird_case_contents/{filename}', 'w', encoding='utf-8') as f:
+                f.write(markdown_content)
+                print(f'Saved file {filename}')
+
+
+
+def run_spider_1(output_file: str, spider: scrapy.Spider):
     process = CrawlerProcess(settings={
         "LOG_LEVEL": "ERROR",
-        "FEEDS": {"results.json": {"format": "json"}},
+        "FEEDS": {output_file: {"format": "json"}},
     })
-    process.crawl(IrdTableSpider)
+    process.crawl(spider)
+    process.start()
+
+def run_spider_2(output_file: str, spider: scrapy.Spider):
+    process = CrawlerProcess(settings={
+        "LOG_LEVEL": "ERROR",
+    })
+    process.crawl(spider)
     process.start()
 
 if __name__ == "__main__":
     print("run script spider")
-    run_spider()
+
+    # output_file = "tests/ird_results.json"
+    # run_spider_1(output_file=output_file, spider=IrdTableSpider)
+
+    output_file = "tests/ird_case_content.json"
+    run_spider_2(output_file=output_file, spider=IrdCaseContentSpider)

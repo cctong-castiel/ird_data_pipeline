@@ -1,0 +1,8 @@
+# llamaindex settings
+CHUNK_SIZE = 512
+CHUNK_OVERLAP = 128
+
+EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
+MAX_LENGTH = 512
+
+TOP_K = 3
