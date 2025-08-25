@@ -1,3 +1,4 @@
+import os
 import torch
 from llama_parse import LlamaParse
 from llama_index.core.node_parser import TokenTextSplitter
@@ -41,6 +42,7 @@ opensearch_client = OpensearchVectorClient(
     embedding_field=EMBEDDING_FIELD,
     text_field=TEXT_FIELD,
     search_pipeline=ENV.OPENSEARCH_SEARCH_PIPELINE,
+    method={"name": "hnsw", "space_type": "l2", "engine": "faiss", "parameters": {"ef_construction": 256, "m": 48}}
 )
 
 vector_store = OpensearchVectorStore(opensearch_client)

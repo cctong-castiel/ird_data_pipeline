@@ -1,3 +1,5 @@
+from llama_index.core.vector_stores.types import VectorStoreQueryMode
+
 # scraping settings
 IRD_PDF_METADATA_URL = "https://www.ird.gov.hk/eng/ppr/dip.htm"
 IRD_CASE_URL = "https://www.ird.gov.hk/eng/ppr/advance{0}.htm"
@@ -6,6 +8,7 @@ IRD_ADVANCE_CASE_URL = "https://www.ird.gov.hk/eng/ppr/arc.htm"
 # directory settings
 IRD_DATA_DIR = "data"
 IRD_CASE_DIR = "data/ird_case_contents"
+IRD_PDF_DIR = "data/ird_pdfs"
 
 # llamaindex settings
 NUM_WORKERS = 4
@@ -21,3 +24,4 @@ EMBEDDING_FIELD = "passage_embedding"
 DIM = 768
 
 TOP_K = 3
+VECTOR_QUERY_MODE = VectorStoreQueryMode.HYBRID

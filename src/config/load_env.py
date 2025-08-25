@@ -78,8 +78,13 @@ class Environment(ConfigBase):
         OPENSEARCH_INITIAL_ADMIN_PASSWORD (str): The OpenSearch admin password.
     """
 
-    LLAMAINDEX_KEY = ("LLAMAINDEX_KEY", str)
-    OPENSEARCH_ADMIN_PASSWORD = ("OPENSEARCH_INITIAL_ADMIN_PASSWORD", str)
-    OPENSEARCH_INDEX_NAME = ("OPENSEARCH_INDEX_NAME", str)
-    OPENSEARCH_ENDPOINT = ("OPENSEARCH_ENDPOINT", str)
-    OPENSEARCH_SEARCH_PIPELINE = ("OPENSEARCH_SEARCH_PIPELINE", str)
+    def __init__(self):
+        """
+        Initialize the Environment instance and sets up specific environment variables.
+        """
+        super().__init__()
+        self.LLAMAINDEX_KEY = ("LLAMAINDEX_KEY", str)
+        self.OPENSEARCH_ADMIN_PASSWORD = ("OPENSEARCH_INITIAL_ADMIN_PASSWORD", str)
+        self.OPENSEARCH_INDEX_NAME = ("OPENSEARCH_INDEX_NAME", str)
+        self.OPENSEARCH_ENDPOINT = ("OPENSEARCH_ENDPOINT", str)
+        self.OPENSEARCH_SEARCH_PIPELINE = ("OPENSEARCH_SEARCH_PIPELINE", str)

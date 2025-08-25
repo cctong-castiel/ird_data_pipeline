@@ -9,16 +9,24 @@ from src.core.scrape.base import SeleniumScraperBase
 from src.core.utils import remove_html_tags, extract_only_alphanumeric
 from src.config.settings import (
     IRD_PDF_METADATA_URL, IRD_CASE_URL, IRD_ADVANCE_CASE_URL,
-    IRD_DATA_DIR, IRD_CASE_DIR
+    IRD_DATA_DIR, IRD_CASE_DIR, IRD_PDF_DIR
 )
 
 
 class IrdTableScraper(SeleniumScraperBase):
+    """
+    A class to scrape the IRD case table from the specified URL and save the results to a JSON file.
+    """
+
     def __init__(self, url: str = IRD_ADVANCE_CASE_URL):
         super().__init__(url=url)
         self.url = url
 
     def fetch_page(self):
+        """
+        A method to fetch and parse the IRD case table from the webpage.
+        """
+
         table = self.driver.find_element(By.CSS_SELECTOR, 'table.border_table')
         rows = table.find_elements(By.TAG_NAME, 'tr')[1:]  # skip header row
 
@@ -42,11 +50,19 @@ class IrdTableScraper(SeleniumScraperBase):
 
 
 class IrdPdfMetadataScraper(SeleniumScraperBase):
+    """
+    A class to scrape the IRD PDF metadata from the specified URL and save the results to a JSON file.
+    """
+
     def __init__(self, url: str = IRD_PDF_METADATA_URL):
         super().__init__(url=url)
         self.url = url
 
     def fetch_page(self):
+        """
+        A method to fetch and parse the IRD PDF metadata table from the webpage.
+        """
+
         table = self.driver.find_element(By.CSS_SELECTOR, 'table.border_table')
         rows = table.find_elements(By.TAG_NAME, 'tr')[1:]  # skip header row
 
@@ -71,10 +87,17 @@ class IrdPdfMetadataScraper(SeleniumScraperBase):
 
 
 class IrdCaseContentSpider(scrapy.Spider):
+    """
+    A Scrapy spider to scrape IRD case contents from specified URLs and save them as Markdown files.
+    """
+
     name = "ird_case_content_spider"
     start_urls = [IRD_CASE_URL.format(i) for i in [13, 16, 26, 44]]
 
     def parse(self, response):
+        """
+        A method to parse the IRD case content page and save the content as a Markdown file.
+        """
 
         html_content = response.css('div#content').get()
 
@@ -91,6 +114,13 @@ class IrdCaseContentSpider(scrapy.Spider):
                 print(f'Saved file {filename}')
 
 def run_spider(spider: scrapy.Spider):
+    """
+    A function to run a Scrapy spider.
+
+    Args:
+        spider (scrapy.Spider): The Scrapy spider to be run.
+    """
+
     process = CrawlerProcess(settings={
         "LOG_LEVEL": "ERROR",
     })
@@ -105,6 +135,7 @@ def download_pdfs(destination_directory: str, num_pdfs: int = 63):
     Args:
         destination_directory (str): The directory where the downloaded PDF files will be saved.
     """
+
     try:
         for i in range(1, num_pdfs + 1):
             pdf_url = f"https://www.ird.gov.hk/eng/pdf/dipn{i:02d}.pdf"
@@ -133,3 +164,22 @@ def download_one_pdf(destination_directory: str, pdf_number: str = "13a"):
     except subprocess.CalledProcessError as e:
         print(f"Error downloading file: {e}")
         print(f"Stderr: {e.stderr}")
+
+
+def scrape_step():
+    """
+    A function to perform the scraping step by initializing and running the necessary scrapers and 
+    spiders to collect IRD case and PDF metadata,
+    """
+
+    # init
+    ird_table_scraper = IrdTableScraper()
+    ird_pdf_metadata_scraper = IrdPdfMetadataScraper()
+
+    # run
+    ird_table_scraper.scrape
+    run_spider(spider=IrdCaseContentSpider)
+
+    ird_pdf_metadata_scraper.scrape
+    download_one_pdf(destination_directory=IRD_PDF_DIR)
+    download_pdfs(destination_directory=IRD_PDF_DIR)
