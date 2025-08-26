@@ -21,7 +21,7 @@ parser = LlamaParse(
     result_type="markdown",
     num_workers=NUM_WORKERS,
     language='en',
-    verbose=True
+    verbose=False
 )
 
 splitter = TokenTextSplitter(

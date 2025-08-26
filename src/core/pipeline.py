@@ -9,7 +9,7 @@ def run_pipeline():
     """
 
     # Step 1: Scrape data
-    scrape_step()
+    # scrape_step()
 
     # Step 2: preprocess data
     docs_ird_case, docs_pdf = preprocess_step()

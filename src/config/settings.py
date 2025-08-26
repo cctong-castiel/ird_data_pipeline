@@ -11,7 +11,7 @@ IRD_CASE_DIR = "data/ird_case_contents"
 IRD_PDF_DIR = "data/ird_pdfs"
 
 # llamaindex settings
-NUM_WORKERS = 4
+NUM_WORKERS = 8
 
 CHUNK_SIZE = 512
 CHUNK_OVERLAP = 128
