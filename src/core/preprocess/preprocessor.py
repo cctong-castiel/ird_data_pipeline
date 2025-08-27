@@ -67,9 +67,16 @@ def preprocess_step() -> List[Document]:
 
     # load and preprocess ird pdf files
     docs_pdf = []
-    pdfs = list(reader.load_data(num_workers=4))
-    for doc, metadata in zip(pdfs[:5], ird_pdf_metadata[:5]):
-        document = Document(text=preprocess_text(doc.text), metadata=metadata)
-        docs_pdf.append(document)
+    for index, docs in enumerate(reader.iter_data()):
+        print(len(docs))
+        print(f'------ parsing index {index} completed ------')
+        for doc in docs:
+            document = Document(text=preprocess_text(doc.text), metadata=ird_pdf_metadata[index])
+            docs_pdf.append(document)
+
+    # pdfs = list(reader.load_data(num_workers=4))
+    # for doc, metadata in zip(pdfs[:5], ird_pdf_metadata[:5]):
+    #     document = Document(text=preprocess_text(doc.text), metadata=metadata)
+    #     docs_pdf.append(document)
 
     return docs_ird_case, docs_pdf
