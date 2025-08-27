@@ -2,10 +2,10 @@ from typing import List
 import json
 import os
 import re
+import subprocess
+import aspose.words as aw
 from llama_index.core import Document
-from llama_index.core import SimpleDirectoryReader
-from src.config.settings import IRD_DATA_DIR, IRD_CASE_DIR, IRD_PDF_DIR, NUM_WORKERS
-from src.initialize.init import parser
+from src.config.settings import IRD_DATA_DIR, IRD_CASE_DIR, IRD_PDF_DIR, IRD_PDF_MD_DIR
 
 
 def preprocess_text(text: str) -> str:
@@ -37,14 +37,6 @@ def preprocess_step() -> List[Document]:
         docs_pdf (List[Document]): A list of Document objects representing preprocessed IRD PDF
     """
 
-    file_extractor = {".pdf": parser}
-    reader = SimpleDirectoryReader(
-        input_dir=os.path.join(os.getcwd(), IRD_PDF_DIR),
-        file_extractor=file_extractor,
-        recursive=True,
-        exclude_hidden=True,
-    )
-
     # laod ird case metadata
     with open(f'{IRD_DATA_DIR}/ird_results.json', 'r', encoding='utf-8') as f:
         ird_metadata = json.load(f)
@@ -62,21 +54,18 @@ def preprocess_step() -> List[Document]:
         with open(os.path.join(IRD_CASE_DIR, f), 'r', encoding='utf-8') as file:
             content = file.read()
             document = Document(text=preprocess_text(content), metadata=metadata)
-            print(f"document: {document}")
             docs_ird_case.append(document)
 
-    # load and preprocess ird pdf files
+    # load and convert pdf files to markdown files. Then preprocess the text and create Document objects.
     docs_pdf = []
-    for index, docs in enumerate(reader.iter_data()):
-        print(len(docs))
-        print(f'------ parsing index {index} completed ------')
-        for doc in docs:
-            document = Document(text=preprocess_text(doc.text), metadata=ird_pdf_metadata[index])
+    ird_pdfs_list = sorted([i for i in os.listdir(IRD_PDF_DIR) if i.endswith('pdf')])
+    for f, metadata in zip(ird_pdfs_list, ird_pdf_metadata):
+        doc_f = aw.Document(os.path.join(IRD_PDF_DIR, f))
+        doc_f.save(os.path.join(IRD_PDF_MD_DIR, f.replace('.pdf', '.md')))
+        with open(os.path.join(IRD_PDF_MD_DIR, f.replace('.pdf', '.md')), 'r', encoding='utf-8') as file:
+            content = file.read()
+            document = Document(text=preprocess_text(content), metadata=metadata)
             docs_pdf.append(document)
-
-    # pdfs = list(reader.load_data(num_workers=4))
-    # for doc, metadata in zip(pdfs[:5], ird_pdf_metadata[:5]):
-    #     document = Document(text=preprocess_text(doc.text), metadata=metadata)
-    #     docs_pdf.append(document)
+    subprocess.run(['rm', f'{IRD_PDF_MD_DIR}/*.png'], shell=True)
 
     return docs_ird_case, docs_pdf

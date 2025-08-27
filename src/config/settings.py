@@ -9,6 +9,7 @@ IRD_ADVANCE_CASE_URL = "https://www.ird.gov.hk/eng/ppr/arc.htm"
 IRD_DATA_DIR = "data"
 IRD_CASE_DIR = "data/ird_case_contents"
 IRD_PDF_DIR = "data/ird_pdfs"
+IRD_PDF_MD_DIR = "data/ird_pdfs_md"
 
 # llamaindex settings
 NUM_WORKERS = 8

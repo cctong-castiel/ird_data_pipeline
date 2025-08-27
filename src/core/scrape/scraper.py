@@ -27,18 +27,26 @@ class IrdTableScraper(SeleniumScraperBase):
         A method to fetch and parse the IRD case table from the webpage.
         """
 
+        # First part - extract the headers part
+        gov_page_title = self.driver.find_element(By.CSS_SELECTOR, '#content-area > section > div.navi > a:nth-child(3)').get_attribute('innerHTML')
+        section_name = self.driver.find_element(By.CSS_SELECTOR, '#content > div.content-div > div.introduction > p:nth-child(6) > strong').get_attribute('innerHTML')
+        table_loc = self.driver.find_element(By.CSS_SELECTOR, '#content > div.content-div > div:nth-child(3) > div.toggle_div > div > div:nth-child(2)').get_attribute('innerHTML')
+        
+        # Second part - extract table data
         table = self.driver.find_element(By.CSS_SELECTOR, 'table.border_table')
         rows = table.find_elements(By.TAG_NAME, 'tr')[1:]  # skip header row
 
         results = []
         for row in rows:
             cols = row.find_elements(By.TAG_NAME, 'td')
-
             case_no = cols[0].find_element(By.TAG_NAME, 'a').get_attribute('innerHTML') if cols[0].find_elements(By.TAG_NAME, 'a') else None
             case_link = cols[0].find_element(By.TAG_NAME, 'a').get_attribute('href') if cols[0].find_elements(By.TAG_NAME, 'a') else None
             provision = cols[1].get_attribute('innerHTML') if cols[1] else None
             index_items = [li.get_attribute('innerHTML') for li in cols[2].find_elements(By.TAG_NAME, 'li')]
             results.append({
+                'gov_page_title': gov_page_title,
+                'section_name': section_name,
+                'table_loc': table_loc,
                 'case_no': case_no,
                 'case_link': case_link,
                 'provision': provision,
@@ -63,6 +71,11 @@ class IrdPdfMetadataScraper(SeleniumScraperBase):
         A method to fetch and parse the IRD PDF metadata table from the webpage.
         """
 
+        # First part - extract the headers part
+        gov_page_title = self.driver.find_element(By.CSS_SELECTOR, '#content-area > section > div.navi > a:nth-child(3)').get_attribute('innerHTML')
+        section_name = self.driver.find_element(By.CSS_SELECTOR, '#content > div.content-title-div > h1').get_attribute('innerHTML')
+        
+        # Second part - extract table data
         table = self.driver.find_element(By.CSS_SELECTOR, 'table.border_table')
         rows = table.find_elements(By.TAG_NAME, 'tr')[1:]  # skip header row
 
@@ -76,6 +89,9 @@ class IrdPdfMetadataScraper(SeleniumScraperBase):
             pdf_notes = remove_html_tags(text=pdf_notes) if pdf_notes else None
             pdf_date = cols[2].get_attribute('innerHTML') if cols[2] else None
             results.append({
+                'gov_page_title': gov_page_title,
+                'section_name': section_name,
+                'table_loc': section_name,
                 'pdf_no': extract_only_alphanumeric(text=pdf_no),
                 'pdf_link': pdf_link,
                 'pdf_notes': pdf_notes,
@@ -181,5 +197,5 @@ def scrape_step():
     run_spider(spider=IrdCaseContentSpider)
 
     ird_pdf_metadata_scraper.scrape
-    download_one_pdf(destination_directory=IRD_PDF_DIR)
-    download_pdfs(destination_directory=IRD_PDF_DIR)
+    # download_one_pdf(destination_directory=IRD_PDF_DIR)
+    # download_pdfs(destination_directory=IRD_PDF_DIR)
