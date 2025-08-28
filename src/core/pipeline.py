@@ -15,4 +15,4 @@ def run_pipeline():
     docs_ird_case, docs_pdf = preprocess_step()
 
     # Step 3: RAG process
-    # rag_step(docs_ird_case, docs_pdf)
+    rag_step(docs_ird_case, docs_pdf)

@@ -6,6 +6,7 @@ import subprocess
 import aspose.words as aw
 from llama_index.core import Document
 from src.config.settings import IRD_DATA_DIR, IRD_CASE_DIR, IRD_PDF_DIR, IRD_PDF_MD_DIR
+from src.core.utils import STOPWORDS_PATTERN
 
 
 def preprocess_text(text: str) -> str:
@@ -23,6 +24,7 @@ def preprocess_text(text: str) -> str:
     # remove special characters and extra spaces
     html_pattern = re.compile(r'<.*?>')
     text = re.sub(html_pattern, '', text)  # remove HTML tags
+    text = re.sub(STOPWORDS_PATTERN, '', text)  # remove stopwords
     # text = re.sub(r'\W+', ' ', text)
     text = text.strip()
     return text

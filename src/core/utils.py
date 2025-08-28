@@ -33,5 +33,7 @@ def remove_html_tags(text: str) -> str:
 STOPWORDS = [
     "Our website : www.ird.gov.hk",
     "**Evaluation Only. Created with Aspose.Words. Copyright 2003-2025 Aspose Pty Ltd.**"
-    '`  `'
+    '`  `',
+    "&amp;",
+    "&amp"
 ]
