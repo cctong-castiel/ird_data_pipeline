@@ -5,6 +5,7 @@ from llama_index.core.node_parser import TokenTextSplitter
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.vector_stores.opensearch import OpensearchVectorStore, OpensearchVectorClient
 from llama_index.core import StorageContext
+from docling.document_converter import DocumentConverter
 from src.config.load_env import Environment
 from src.config.settings import *
 
@@ -16,6 +17,8 @@ ENV = Environment()
 
 
 # RAG initialization
+converter = DocumentConverter()
+
 parser = LlamaParse(
     api_key=ENV.LLAMAINDEX_KEY,
     result_type="markdown",

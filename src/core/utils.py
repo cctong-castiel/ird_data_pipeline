@@ -37,3 +37,5 @@ STOPWORDS = [
     "&amp;",
     "&amp"
 ]
+
+STOPWORDS_PATTERN = "|".join(STOPWORDS)

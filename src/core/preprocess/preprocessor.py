@@ -6,6 +6,7 @@ import subprocess
 import aspose.words as aw
 from llama_index.core import Document
 from src.config.settings import IRD_DATA_DIR, IRD_CASE_DIR, IRD_PDF_DIR, IRD_PDF_MD_DIR
+from src.initialize.init import converter
 from src.core.utils import STOPWORDS_PATTERN
 
 
@@ -62,8 +63,9 @@ def preprocess_step() -> List[Document]:
     docs_pdf = []
     ird_pdfs_list = sorted([i for i in os.listdir(IRD_PDF_DIR) if i.endswith('pdf')])
     for f, metadata in zip(ird_pdfs_list, ird_pdf_metadata):
-        doc_f = aw.Document(os.path.join(IRD_PDF_DIR, f))
-        doc_f.save(os.path.join(IRD_PDF_MD_DIR, f.replace('.pdf', '.md')))
+        doc_f = converter.convert(os.path.join(IRD_PDF_DIR, f))
+        with open(os.path.join(IRD_PDF_MD_DIR, f.replace('.pdf', '.md')), 'w', encoding='utf-8') as file:
+            doc_f.document.export_to_markdown()
         with open(os.path.join(IRD_PDF_MD_DIR, f.replace('.pdf', '.md')), 'r', encoding='utf-8') as file:
             content = file.read()
             document = Document(text=preprocess_text(content), metadata=metadata)
