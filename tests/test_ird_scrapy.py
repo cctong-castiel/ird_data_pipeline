@@ -70,8 +70,8 @@ def run_spider_2(output_file: str, spider: scrapy.Spider):
 if __name__ == "__main__":
     print("run script spider")
 
-    # output_file = "tests/ird_results.json"
-    # run_spider_1(output_file=output_file, spider=IrdTableSpider)
+    output_file = "tests/ird_results.json"
+    run_spider_1(output_file=output_file, spider=IrdTableSpider)
 
-    output_file = "tests/ird_case_content.json"
-    run_spider_2(output_file=output_file, spider=IrdCaseContentSpider)
+    # output_file = "tests/ird_case_content.json"
+    # run_spider_2(output_file=output_file, spider=IrdCaseContentSpider)
