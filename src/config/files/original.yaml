@@ -2,9 +2,9 @@ ird_pdf_md_dir: data/ird_pdfs_md_original
 object_dir: src/core/objects/original
 output_filename: original
 run_pdf_to_md: false
-scrape_data: false
+scrape_data: true
 save_pickle: true
-load_pickle: true
+load_pickle: false
 # index_name: my-nlp-index
 queries:
   - "Which section of the Inland Revenue Ordinance imposed the basic charge of Salaries Tax?"
