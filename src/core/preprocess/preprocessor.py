@@ -5,7 +5,7 @@ import re
 import subprocess
 import aspose.words as aw
 from llama_index.core import Document
-from src.config.settings import IRD_DATA_DIR, IRD_CASE_DIR, IRD_PDF_DIR, IRD_PDF_MD_DIR
+from src.config.settings import IRD_DATA_DIR, IRD_CASE_DIR, IRD_PDF_DIR
 from src.initialize.init import converter
 from src.core.utils import STOPWORDS_PATTERN
 
@@ -26,11 +26,10 @@ def preprocess_text(text: str) -> str:
     html_pattern = re.compile(r'<.*?>')
     text = re.sub(html_pattern, '', text)  # remove HTML tags
     text = re.sub(STOPWORDS_PATTERN, '', text)  # remove stopwords
-    # text = re.sub(r'\W+', ' ', text)
     text = text.strip()
     return text
 
-def preprocess_step() -> List[Document]:
+def preprocess_step(pdf_md_dir: str, object_dir: str, run_pdf_to_md: bool = False, save_pickle: bool = True) -> List[Document]:
     """
     It is a function to preprocess IRD case contents and IRD PDF files by loading their metadata and contents, applying text preprocessing, 
     and returning lists of Document objects with associated metadata.
@@ -64,12 +63,21 @@ def preprocess_step() -> List[Document]:
     ird_pdfs_list = sorted([i for i in os.listdir(IRD_PDF_DIR) if i.endswith('pdf')])
     for f, metadata in zip(ird_pdfs_list, ird_pdf_metadata):
         doc_f = converter.convert(os.path.join(IRD_PDF_DIR, f))
-        with open(os.path.join(IRD_PDF_MD_DIR, f.replace('.pdf', '.md')), 'w', encoding='utf-8') as file:
-            doc_f.document.export_to_markdown()
-        with open(os.path.join(IRD_PDF_MD_DIR, f.replace('.pdf', '.md')), 'r', encoding='utf-8') as file:
+        if run_pdf_to_md:
+            with open(os.path.join(pdf_md_dir, f.replace('.pdf', '.md')), 'w', encoding='utf-8') as file:
+                doc_f.document.export_to_markdown()
+            subprocess.run(['rm', f'{pdf_md_dir}/*.png'], shell=True)
+        with open(os.path.join(pdf_md_dir, f.replace('.pdf', '.md')), 'r', encoding='utf-8') as file:
             content = file.read()
             document = Document(text=preprocess_text(content), metadata=metadata)
             docs_pdf.append(document)
-    subprocess.run(['rm', f'{IRD_PDF_MD_DIR}/*.png'], shell=True)
+
+    # save the docs_ird_case and docs_pdf to pickle files for future use
+    if save_pickle:
+        import pickle
+        with open(f'{object_dir}/docs_ird_case.pkl', 'wb') as f:
+            pickle.dump(docs_ird_case, f)
+        with open(f'{object_dir}/docs_pdf.pkl', 'wb') as f:
+            pickle.dump(docs_pdf, f)
 
     return docs_ird_case, docs_pdf

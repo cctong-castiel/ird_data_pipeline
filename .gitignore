@@ -194,4 +194,4 @@ cython_debug/
 
 # others
 .DS_Store
-data/ird_pdfs_md
+# data/ird_pdfs_md
