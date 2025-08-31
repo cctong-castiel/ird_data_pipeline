@@ -1,5 +1,6 @@
 from llama_index.core.vector_stores.types import VectorStoreQueryMode
 
+
 # scraping settings
 IRD_PDF_METADATA_URL = "https://www.ird.gov.hk/eng/ppr/dip.htm"
 IRD_CASE_URL = "https://www.ird.gov.hk/eng/ppr/advance{0}.htm"
@@ -18,7 +19,7 @@ NUM_WORKERS = 8
 CHUNK_SIZE = 512
 CHUNK_OVERLAP = 50
 
-EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
+EMBEDDING_MODEL_NAME = "sentence-transformers/all-distilroberta-v1"
 MAX_LENGTH = 512
 
 TEXT_FIELD = "context_text"
