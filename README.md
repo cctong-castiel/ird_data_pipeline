@@ -12,7 +12,10 @@ In the docker-compose.yml directory, run the following command.
 docker-compose up
 ```
 
-2. Create conda environments
+2. Set the .env
+- set the environment variables based on .env.template
+
+3. Create conda environments
 - Create python 3.11 conda environment
 ```
 conda create -n timothy_koh_rag python=3.11
@@ -23,12 +26,12 @@ conda create -n timothy_koh_rag python=3.11
 pip install --no-cache-dir -r ./lib/requirements.txt
 ```
 
-3. Run the following command to export the project directory to PYTHONPATH
+4. Run the following command to export the project directory to PYTHONPATH
 ```
 export PYTHONPATH=.
 ```
 
-4. Set the yaml files setting
+5. Set the yaml files setting
 - There are 2 config yaml files in src/config/files. They are original.yaml and preprocessed.yaml. 
     - original.yaml:
         - It uses data/ird_pdfs_md_original markdown files created by docling without preprocessing steps.
@@ -45,7 +48,7 @@ export PYTHONPATH=.
         - save_pickle: false
         - load_pickle: true
 
-5. Run the main.py
+6. Run the main.py
 - Prequisites:
     - make sure opensearch instances are on
     - make sure created the following items in opensearch
@@ -106,13 +109,29 @@ I am still investigate how to do it. Below is the direction for thinking how to 
   - Use links to bridge across multiple indices or external data sources.
   - Enable unified search experiences by resolving and indexing linked content dynamically.
 
-
-
 ### A sample query output, highlighting the information displayed and demonstrating the relevance of the results
 
 ![An opensearch query output sample](assets/imgs/opensearch_query_output_eg.png)
 
 It shows that the maximum score of the 3 retrieved documents is 0.7. There rest are about 0.11960408 and 0.00070000003 respectively. The scoring will be based on the combination of semantic and keyword search with ratio 0.7 and 0.3 respectively.
+
+### Discussion and Modification
+
+This part is about obstacles I encountered and what I can do the task better.
+
+1. Design the architecture 
+- Since it is not enough time, I decided to design a rough RAG template and built a RAG system. However, I should investigate more about how to present the results to audience in a better way. I spent extra time to test Opensearch dashboard which is my first time to use. I should spend a bit time to do PoC on Opensearch and play around with it. Then I can design a better pipeline.
+
+- I can think about spending some time on airflow/prefect(higher priority) and RabbitMQ(lower priority) in 10 days code challenge. At least there is fancy UI to run a particular functions which are not dependent on each other. It could speed up development work.
+
+2. Scraping
+
+
+3. Preprocessing
+
+
+
+
 
 ### Reference
 1. Setup AWS OpenSearch: https://www.youtube.com/watch?v=BNOYTbRbaFQ
