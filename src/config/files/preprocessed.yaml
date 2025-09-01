@@ -9,4 +9,5 @@ load_pickle: true
 queries:
   - "Which section of the Inland Revenue Ordinance imposed the basic charge of Salaries Tax?"
   - "Which 2 machinery or plants does the lease in included?"
+  - "What does lease mean in legal term?"
   - "which section provides a form for double taxation relief?"
