@@ -88,11 +88,31 @@ There are 5 main parts in the opensearch data fields setting.
 
 ### Sample OpenSearch queries and descriptions of how internal links are leveraged in search results
 
+I am still investigate how to do it. Below is the direction for thinking how to do so.
+
+•⁠  ⁠Optimizing Indexing Strategy
+  - Index linked metadata separately to allow for faster retrieval and filtering.
+  - Use link types (e.g., citation, reference, related) as facets or filters in search UI.
+
+•⁠  ⁠Contextual Expansion
+  - Use metadata links to fetch related documents or external resources that provide additional context.
+  - Enrich query results by including linked content in the relevance scoring process.
+
+•⁠  ⁠Boosting Semantic Relevance
+  - Apply link-based signals (e.g., backlink count, link authority) to adjust document ranking.
+  - Prioritize documents with high-quality inbound links or strong semantic connections.
+
+•⁠  ⁠Supporting Federated Search
+  - Use links to bridge across multiple indices or external data sources.
+  - Enable unified search experiences by resolving and indexing linked content dynamically.
+
+
 
 ### A sample query output, highlighting the information displayed and demonstrating the relevance of the results
 
 ![An opensearch query output sample](assets/imgs/opensearch_query_output_eg.png)
 
+It shows that the maximum score of the 3 retrieved documents is 0.7. There rest are about 0.11960408 and 0.00070000003 respectively. The scoring will be based on the combination of semantic and keyword search with ratio 0.7 and 0.3 respectively.
 
 ### Reference
 1. Setup AWS OpenSearch: https://www.youtube.com/watch?v=BNOYTbRbaFQ
