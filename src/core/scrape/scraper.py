@@ -5,6 +5,7 @@ from scrapy.crawler import CrawlerProcess
 import html2text
 import json
 from selenium.webdriver.common.by import By
+from prefect import task
 from src.core.scrape.base import SeleniumScraperBase
 from src.core.utils import remove_html_tags, extract_only_alphanumeric
 from src.config.settings import (
@@ -182,6 +183,7 @@ def download_one_pdf(destination_directory: str, pdf_number: str = "13a"):
         print(f"Stderr: {e.stderr}")
 
 
+@task(name="scrape_step", task_run_name="scrape_ird_data_task", log_prints=True)
 def scrape_step():
     """
     A function to perform the scraping step by initializing and running the necessary scrapers and 

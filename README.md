@@ -130,8 +130,5 @@ This part is about obstacles I encountered and what I can do the task better.
 3. Preprocessing
 
 
-
-
-
 ### Reference
 1. Setup AWS OpenSearch: https://www.youtube.com/watch?v=BNOYTbRbaFQ
