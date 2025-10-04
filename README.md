@@ -68,6 +68,17 @@ python src/main.py original
 python src/main.py preprocessed
 ```
 
+7. Prefect server
+- start prefect server
+```
+prefect server start
+```
+
+- start the worker pool
+```
+prefect worker start --pool "ird-data-pool"
+```
+
 ### Explanation of the data fields, structure, and hierarchy in OpenSearch
 ![alt text](assets/imgs/opensearch_schema.png)
 
