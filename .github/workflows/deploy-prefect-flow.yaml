@@ -32,4 +32,5 @@ jobs:
           PREFECT_API_URL: ${{ secrets.PREFECT_API_URL }}
         run: |
           pip install -r lib/requirements.txt
+          export PYTHONPATH=.
           python src/deploy.py
