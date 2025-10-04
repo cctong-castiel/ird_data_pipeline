@@ -1,7 +1,7 @@
 import argparse
 import yaml
-from core.orchestrator import ird_data_pipeline_dag
-from core.pipeline import run_pipeline
+from core.orchestrator import ird_scrape_data_dag, ird_preprocess_data_dag, ird_rag_dag
+# from core.pipeline import run_pipeline
 
     
 
@@ -16,5 +16,10 @@ if __name__ == "__main__":
         config = yaml.safe_load(file)
     print(f'Config loaded: {config}')
 
-    # ird_data_pipeline_dag()
-    run_pipeline(config=config)
+    # running the default pipeline
+    # run_pipeline(config=config)
+
+    # running the Prefect orchestrator DAGs
+    ird_scrape_data_dag()
+    ird_preprocess_data_dag(config=config)
+    ird_rag_dag(config=config)

@@ -5,6 +5,7 @@ import re
 import subprocess
 import aspose.words as aw
 from llama_index.core import Document
+from prefect import task
 from src.config.settings import IRD_DATA_DIR, IRD_CASE_DIR, IRD_PDF_DIR
 from src.initialize.init import converter
 from src.core.utils import STOPWORDS_PATTERN
@@ -29,6 +30,7 @@ def preprocess_text(text: str) -> str:
     text = text.strip()
     return text
 
+@task(name="preprocess_step", task_run_name="preprocess_ird_data_task")
 def preprocess_step(pdf_md_dir: str, object_dir: str, run_pdf_to_md: bool = False, save_pickle: bool = True) -> List[Document]:
     """
     It is a function to preprocess IRD case contents and IRD PDF files by loading their metadata and contents, applying text preprocessing, 

@@ -1,4 +1,5 @@
 from typing import List, Any
+from prefect import task
 from llama_index.core import VectorStoreIndex, Document
 from llama_index.core.base.base_retriever import BaseRetriever
 from src.initialize.init import (
@@ -55,6 +56,7 @@ def retrieve_documents(query: str, retriever: BaseRetriever) -> Any:
     return response
 
 
+@task(name="rag_step", task_run_name="rag_ird_data_task")
 def rag_step(queries: List[str], docs_ird_case: List[Document], docs_pdf: List[Document]) -> List[Any]:
     """
     It is a function to perform the RAG (Retrieval-Augmented Generation) step by creating a retriever from the provided documents 
