@@ -4,7 +4,6 @@ from prefect.blocks.system import JSON
 from src.core.scrape.scraper import scrape_step
 from src.core.preprocess.preprocessor import preprocess_step
 from src.core.process.rag import rag_step
-from src.config.settings import IRD_DATA_DIR
 
 
 @flow(name="ird_scrape_data_dag", description="A DAG to scrape IRD data")

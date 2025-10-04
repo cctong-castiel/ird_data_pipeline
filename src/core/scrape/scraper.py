@@ -10,7 +10,7 @@ from src.core.scrape.base import SeleniumScraperBase
 from src.core.utils import remove_html_tags, extract_only_alphanumeric
 from src.config.settings import (
     IRD_PDF_METADATA_URL, IRD_CASE_URL, IRD_ADVANCE_CASE_URL,
-    IRD_DATA_DIR, IRD_CASE_DIR, IRD_PDF_DIR
+    IRD_DATA_DIR, IRD_CASE_DIR
 )
 
 
