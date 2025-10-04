@@ -1,4 +1,4 @@
-from core.orchestrator import ird_scrape_data_dag, ird_preprocess_data_dag, ird_rag_dag
+from core.orchestrator import ird_scrape_data_dag, ird_preprocess_data_dag
 
 
 if __name__ == "__main__":
