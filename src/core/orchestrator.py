@@ -42,8 +42,8 @@ def ird_preprocess_data_dag(config: dict):
     # Step 3: Store docs_ird_case and docs_pdf as JSON blocks for later use
     docs_ird_case_block = JSON(value=docs_ird_case)
     docs_pdf_block = JSON(value=docs_pdf)
-    docs_ird_case_block.save(name="docs_ird_case", overwrite=True)
-    docs_pdf_block.save(name="docs_pdf", overwrite=True)
+    docs_ird_case_block.save(name="docs-ird-case", overwrite=True)
+    docs_pdf_block.save(name="docs-pdf", overwrite=True)
 
 
 @flow(name="ird_rag_dag", description="A DAG to perform RAG processing on IRD data")
