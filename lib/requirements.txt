@@ -17,7 +17,7 @@ llama-cloud-services==0.6.72
 llama-index==0.14.4
 llama-index-cli==0.5.3
 llama-index-core==0.14.4
-llama-index-embeddings-huggingface==0.6.0
+# llama-index-embeddings-huggingface==0.6.0
 llama-index-embeddings-openai==0.5.1
 llama-index-indices-managed-llama-cloud==0.9.4
 llama-index-instrumentation==0.4.0
