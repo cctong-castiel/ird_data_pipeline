@@ -12,7 +12,7 @@ docling-core==2.45.0
 docling-ibm-models==3.9.0
 docling-parse==4.2.3
 html2text==2025.4.15
-llama-cloud==0.1.35
+llama-cloud==0.1.43
 llama-cloud-services==0.6.72
 llama-index==0.14.4
 llama-index-cli==0.5.0
