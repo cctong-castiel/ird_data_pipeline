@@ -1,7 +1,7 @@
 name: Deploy ird_data_pipeline flow
 
 on:
-  push:
+  pull_request:
     branches:
       - develop
       - main
