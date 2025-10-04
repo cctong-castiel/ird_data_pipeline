@@ -30,6 +30,11 @@ jobs:
         env:
           PREFECT_API_KEY: ${{ secrets.PREFECT_API_KEY }}
           PREFECT_API_URL: ${{ secrets.PREFECT_API_URL }}
+          LLAMAINDEX_KEY: ${{ secrets.LLAMAINDEX_KEY }}
+          OPENSEARCH_INITIAL_ADMIN_PASSWORD: ${{ secrets.OPENSEARCH_INITIAL_ADMIN_PASSWORD }}
+          OPENSEARCH_INDEX_NAME: ${{ secrets.OPENSEARCH_INDEX_NAME }}
+          OPENSEARCH_ENDPOINT: ${{ secrets.OPENSEARCH_ENDPOINT }}
+          OPENSEARCH_SEARCH_PIPELINE: ${{ secrets.OPENSEARCH_SEARCH_PIPELINE }}
         run: |
           pip install -r lib/requirements.txt
           export PYTHONPATH=.
