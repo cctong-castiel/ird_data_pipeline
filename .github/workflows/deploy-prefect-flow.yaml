@@ -10,7 +10,26 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-
+    services:
+      opensearch:
+        image: opensearchproject/opensearch:latest
+        env:
+          cluster.name: opensearch-cluster
+          node.name: opensearch-node1
+          discovery.type: single-node
+          bootstrap.memory_lock: "true"
+          OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
+          DISABLE_INSTALL_DEMO_CONFIG: "true"
+          DISABLE_SECURITY_PLUGIN: "true"
+        ports:
+          - 9200:9200
+          - 9600:9600
+        options: >-
+          --health-cmd="curl -s http://localhost:9200/_cluster/health || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+          
     steps:
       - name: Checkout
         uses: actions/checkout@v4
