@@ -36,3 +36,4 @@ torch==2.8.0
 torchvision==0.23.0
 webdriver-manager==4.0.2
 transformers==4.55.4
+prefect==3.4.14
