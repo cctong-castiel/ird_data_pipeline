@@ -68,6 +68,32 @@ python src/main.py original
 python src/main.py preprocessed
 ```
 
+7. Prefect server
+- start prefect server
+```
+prefect server start
+```
+
+- start the worker pool
+```
+prefect worker start --pool "ird-data-pool"
+```
+
+- Run deployment
+```
+prefect deploy
+```
+An example to run a deployment
+```
+prefect deployment run 'ird_scrape_data_dag/ird-data-pipeline-deployment'
+```
+
+8. Build local Docker image
+```
+docker build -f docker/Dockerfile -t cctongcastiel/ird_data_pipeline_scrape:0.0.1 .
+docker push cctongcastiel/ird_data_pipeline_scrape:0.0.1
+```
+
 ### Explanation of the data fields, structure, and hierarchy in OpenSearch
 ![alt text](assets/imgs/opensearch_schema.png)
 

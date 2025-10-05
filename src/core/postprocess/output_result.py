@@ -1,5 +1,5 @@
 import os
-from typing import List, Any
+from typing import Any
 from datetime import datetime
 import pandas as pd
 from src.config.settings import OUTPUT_DIR

@@ -3,7 +3,6 @@ import json
 import os
 import re
 import subprocess
-import aspose.words as aw
 from llama_index.core import Document
 from prefect import task
 from src.config.settings import IRD_DATA_DIR, IRD_CASE_DIR, IRD_PDF_DIR

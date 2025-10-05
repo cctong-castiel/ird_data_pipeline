@@ -1,0 +1,41 @@
+version: 2
+
+build:
+  - prefect.deployments.steps.set_working_directory:
+      directory: /app
+  - prefect.deployments.steps.run_shell_script:
+      script: pip install -r lib/requirements.txt
+
+deployments:
+  - name: ird-data-pipeline-deployment
+    entrypoint: src/core/orchestrator.py:ird_scrape_data_dag  # Change to your actual flow function if needed
+    work_pool:
+      name: ird-data-pool
+      job_variables:
+        image: cctongcastiel/ird_data_pipeline_scrape:0.0.1
+        dockerhub_username: "${{ secrets.DOCKER_USERNAME }}"
+        dockerhub_password: "${{ secrets.DOCKER_PASSWORD }}"
+    env:
+      PREFECT_API_KEY: "${{ secrets.PREFECT_API_KEY }}"
+      PREFECT_API_URL: "${{ secrets.PREFECT_API_URL }}"
+    parameters: {}
+    schedule: null
+    tags: []
+    description: "Deployment for ird_data_pipeline using Prefect."
+  
+  - name: ird-preprocess-pipeline-deployment
+    entrypoint: src/core/orchestrator.py:ird_preprocess_data_dag  # Change to your actual flow function if needed
+    work_pool:
+      name: ird-data-pool
+      job_variables:
+        image: cctongcastiel/ird_data_pipeline_preprocess:0.0.1
+        dockerhub_username: "${{ secrets.DOCKER_USERNAME }}"
+        dockerhub_password: "${{ secrets.DOCKER_PASSWORD }}"
+    env:
+      PREFECT_API_KEY: "${{ secrets.PREFECT_API_KEY }}"
+      PREFECT_API_URL: "${{ secrets.PREFECT_API_URL }}"
+    parameters: {}
+    schedule: null
+    tags: []
+    description: "Deployment for ird_preprocess_pipeline using Prefect."
+

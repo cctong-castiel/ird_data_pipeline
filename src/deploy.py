@@ -1,4 +1,4 @@
-from core.orchestrator import ird_scrape_data_dag, ird_preprocess_data_dag, ird_rag_dag
+from core.orchestrator import ird_scrape_data_dag, ird_preprocess_data_dag
 
 
 if __name__ == "__main__":
@@ -17,8 +17,8 @@ if __name__ == "__main__":
     )
 
     # deploy ird_rag_dag
-    ird_rag_dag.deploy(
-        name="ird-rag-pipeline-deployment",
-        work_pool_name="ird-data-pool",
-        image="cctongcastiel/ird_data_pipeline_rag:0.0.1"
-    )
+    # ird_rag_dag.deploy(
+    #     name="ird-rag-pipeline-deployment",
+    #     work_pool_name="ird-data-pool",
+    #     image="cctongcastiel/ird_data_pipeline_rag:0.0.1"
+    # )
