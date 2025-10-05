@@ -38,16 +38,22 @@ embedding_model = HuggingFaceEmbedding(
     device=device
 )
 
-opensearch_client = OpensearchVectorClient(
-    endpoint=ENV.OPENSEARCH_ENDPOINT,
-    index=ENV.OPENSEARCH_INDEX_NAME,
-    dim=DIM,
-    embedding_field=EMBEDDING_FIELD,
-    text_field=TEXT_FIELD,
-    search_pipeline=ENV.OPENSEARCH_SEARCH_PIPELINE,
-    method={"name": "hnsw", "space_type": "l2", "engine": "faiss", "parameters": {"ef_construction": 256, "m": 48}}
-)
+try:
+    opensearch_client = OpensearchVectorClient(
+        endpoint=ENV.OPENSEARCH_ENDPOINT,
+        index=ENV.OPENSEARCH_INDEX_NAME,
+        dim=DIM,
+        embedding_field=EMBEDDING_FIELD,
+        text_field=TEXT_FIELD,
+        search_pipeline=ENV.OPENSEARCH_SEARCH_PIPELINE,
+        method={"name": "hnsw", "space_type": "l2", "engine": "faiss", "parameters": {"ef_construction": 256, "m": 48}}
+    )
 
-vector_store = OpensearchVectorStore(opensearch_client)
+    vector_store = OpensearchVectorStore(opensearch_client)
 
-storage_context = StorageContext.from_defaults(vector_store=vector_store)
+    storage_context = StorageContext.from_defaults(vector_store=vector_store)
+except Exception as e:
+    print(f"Error initializing OpensearchVectorStore: {e}")
+    opensearch_client = None
+    vector_store = None
+    storage_context = None
