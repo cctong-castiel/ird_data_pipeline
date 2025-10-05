@@ -6,7 +6,7 @@
 # apache-airflow-providers-smtp==2.2.0
 # apache-airflow-providers-standard==1.6.0
 # apache-airflow-task-sdk==1.0.4
-aspose-words==25.8.0
+# aspose-words==25.9.0
 docling==2.48.0
 docling-core==2.45.0
 docling-ibm-models==3.9.0
