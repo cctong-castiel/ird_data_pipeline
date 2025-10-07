@@ -18,6 +18,11 @@ deployments:
     env:
       PREFECT_API_KEY: "${{ secrets.PREFECT_API_KEY }}"
       PREFECT_API_URL: "${{ secrets.PREFECT_API_URL }}"
+      AWS_OPENSEARCH_ENDPOINT: "${{ secrets.AWS_OPENSEARCH_ENDPOINT }}"
+      AWS_OPENSEARCH_USERNAME: "${{ secrets.AWS_OPENSEARCH_USERNAME }}"
+      AWS_OPENSEARCH_PASSWORD: "${{ secrets.AWS_OPENSEARCH_PASSWORD }}"
+      AWS_OPENSEARCH_KEY: "${{ secrets.AWS_OPENSEARCH_KEY }}"
+      AWS_OPENSEARCH_SECRET: "${{ secrets.AWS_OPENSEARCH_SECRET }}"
     parameters: {}
     schedule: null
     tags: []
@@ -32,8 +37,11 @@ deployments:
         dockerhub_username: "${{ secrets.DOCKER_USERNAME }}"
         dockerhub_password: "${{ secrets.DOCKER_PASSWORD }}"
     env:
-      PREFECT_API_KEY: "${{ secrets.PREFECT_API_KEY }}"
-      PREFECT_API_URL: "${{ secrets.PREFECT_API_URL }}"
+      AWS_OPENSEARCH_ENDPOINT: "${{ secrets.AWS_OPENSEARCH_ENDPOINT }}"
+      AWS_OPENSEARCH_USERNAME: "${{ secrets.AWS_OPENSEARCH_USERNAME }}"
+      AWS_OPENSEARCH_PASSWORD: "${{ secrets.AWS_OPENSEARCH_PASSWORD }}"
+      AWS_OPENSEARCH_KEY: "${{ secrets.AWS_OPENSEARCH_KEY }}"
+      AWS_OPENSEARCH_SECRET: "${{ secrets.AWS_OPENSEARCH_SECRET }}"
     parameters: {}
     schedule: null
     tags: []
