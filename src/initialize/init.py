@@ -39,7 +39,7 @@ embedding_model = HuggingFaceEmbedding(
 )
 
 try:
-    if ENV.AWS_OPENSEARCH_ENDPOINT != '' or ENV.AWS_OPENSEARCH_USERNAME != '' or ENV.AWS_OPENSEARCH_PASSWORD != '':
+    if ENV.AWS_OPENSEARCH_ENDPOINT == '' or ENV.AWS_OPENSEARCH_USERNAME == '' or ENV.AWS_OPENSEARCH_PASSWORD == '':
         opensearch_client = OpensearchVectorClient(
             endpoint=ENV.OPENSEARCH_ENDPOINT,
             index=ENV.OPENSEARCH_INDEX_NAME,
@@ -51,6 +51,13 @@ try:
         )
 
     else:
+        from requests_aws4auth import AWS4Auth
+        awsauth = AWS4Auth(
+            ENV.AWS_OPENSEARCH_KEY,
+            ENV.AWS_OPENSEARCH_SECRET,
+            "us-east-1",  # your region
+            "es",
+        )
         opensearch_client = OpensearchVectorClient(
             endpoint=ENV.AWS_OPENSEARCH_ENDPOINT,
             index=ENV.OPENSEARCH_INDEX_NAME,
@@ -59,7 +66,7 @@ try:
             text_field=TEXT_FIELD,
             search_pipeline=ENV.OPENSEARCH_SEARCH_PIPELINE,
             method={"name": "hnsw", "space_type": "l2", "engine": "faiss", "parameters": {"ef_construction": 256, "m": 48}},
-            kwargs={"http_auth": (ENV.AWS_OPENSEARCH_USERNAME, ENV.AWS_OPENSEARCH_PASSWORD), "use_ssl": True, "verify_certs": True, "timeout": 30}
+            kwargs={"http_auth": awsauth, "use_ssl": True, "verify_certs": True, "timeout": 30}
         )
 
     vector_store = OpensearchVectorStore(opensearch_client)

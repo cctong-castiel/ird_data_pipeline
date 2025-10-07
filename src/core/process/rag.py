@@ -34,7 +34,7 @@ def process_rag(docs_ird_case: List[Document], docs_pdf: List[Document]) -> Base
     # create retriever
     retriever = index.as_retriever(
         similarity_top_k=TOP_K,
-        vector_store_query_mode=VECTOR_QUERY_MODE
+        # vector_store_query_mode=VECTOR_QUERY_MODE
     )
 
     return retriever
