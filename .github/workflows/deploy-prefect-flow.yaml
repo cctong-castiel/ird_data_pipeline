@@ -54,6 +54,9 @@ jobs:
           OPENSEARCH_INDEX_NAME: ${{ secrets.OPENSEARCH_INDEX_NAME }}
           OPENSEARCH_ENDPOINT: ${{ secrets.OPENSEARCH_ENDPOINT }}
           OPENSEARCH_SEARCH_PIPELINE: ${{ secrets.OPENSEARCH_SEARCH_PIPELINE }}
+          AWS_OPENSEARCH_ENDPOINT: ${{ secrets.AWS_OPENSEARCH_ENDPOINT }}
+          AWS_OPENSEARCH_USERNAME: ${{ secrets.AWS_OPENSEARCH_USERNAME }}
+          AWS_OPENSEARCH_PASSWORD: ${{ secrets.AWS_OPENSEARCH_PASSWORD }}
         run: |
           pip install -r lib/requirements.txt
           export PYTHONPATH=.
