@@ -39,15 +39,28 @@ embedding_model = HuggingFaceEmbedding(
 )
 
 try:
-    opensearch_client = OpensearchVectorClient(
-        endpoint=ENV.OPENSEARCH_ENDPOINT,
-        index=ENV.OPENSEARCH_INDEX_NAME,
-        dim=DIM,
-        embedding_field=EMBEDDING_FIELD,
-        text_field=TEXT_FIELD,
-        search_pipeline=ENV.OPENSEARCH_SEARCH_PIPELINE,
-        method={"name": "hnsw", "space_type": "l2", "engine": "faiss", "parameters": {"ef_construction": 256, "m": 48}}
-    )
+    if ENV.AWS_OPENSEARCH_ENDPOINT != '' or ENV.AWS_OPENSEARCH_USERNAME != '' or ENV.AWS_OPENSEARCH_PASSWORD != '':
+        opensearch_client = OpensearchVectorClient(
+            endpoint=ENV.OPENSEARCH_ENDPOINT,
+            index=ENV.OPENSEARCH_INDEX_NAME,
+            dim=DIM,
+            embedding_field=EMBEDDING_FIELD,
+            text_field=TEXT_FIELD,
+            search_pipeline=ENV.OPENSEARCH_SEARCH_PIPELINE,
+            method={"name": "hnsw", "space_type": "l2", "engine": "faiss", "parameters": {"ef_construction": 256, "m": 48}},
+        )
+
+    else:
+        opensearch_client = OpensearchVectorClient(
+            endpoint=ENV.AWS_OPENSEARCH_ENDPOINT,
+            index=ENV.OPENSEARCH_INDEX_NAME,
+            dim=DIM,
+            embedding_field=EMBEDDING_FIELD,
+            text_field=TEXT_FIELD,
+            search_pipeline=ENV.OPENSEARCH_SEARCH_PIPELINE,
+            method={"name": "hnsw", "space_type": "l2", "engine": "faiss", "parameters": {"ef_construction": 256, "m": 48}},
+            kwargs={"http_auth": (ENV.AWS_OPENSEARCH_USERNAME, ENV.AWS_OPENSEARCH_PASSWORD), "use_ssl": True, "verify_certs": True, "timeout": 30}
+        )
 
     vector_store = OpensearchVectorStore(opensearch_client)
 
