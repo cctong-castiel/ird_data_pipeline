@@ -57,5 +57,4 @@ jobs:
         run: |
           pip install -r lib/requirements.txt
           export PYTHONPATH=.
-          curl -X PUT "https://search-ird-data-pipeline-32847293-damnegkmyefohl3dxqzrc2bd5i.aos.us-east-1.on.aws/_cluster/settings" -H 'Content-Type: application/json' -d '{"persistent":{"cluster.blocks.create_index":null}}'
           prefect deploy --name ird-data-pipeline-deployment
