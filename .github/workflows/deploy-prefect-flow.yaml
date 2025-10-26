@@ -57,8 +57,8 @@ jobs:
           AWS_OPENSEARCH_ENDPOINT: ${{ secrets.AWS_OPENSEARCH_ENDPOINT }}
           AWS_OPENSEARCH_USERNAME: ${{ secrets.AWS_OPENSEARCH_USERNAME }}
           AWS_OPENSEARCH_PASSWORD: ${{ secrets.AWS_OPENSEARCH_PASSWORD }}
-          AWS_OPENSEARCH_KEY: ${{ secrets.AWS_OPENSEARCH_KEY }}
-          AWS_OPENSEARCH_SECRET: ${{ secrets.AWS_OPENSEARCH_SECRET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           pip install -r lib/requirements.txt
           export PYTHONPATH=.

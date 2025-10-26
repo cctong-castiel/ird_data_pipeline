@@ -20,6 +20,6 @@ if __name__ == "__main__":
     # run_pipeline(config=config)
 
     # running the Prefect orchestrator DAGs
-    # ird_scrape_data_dag()
-    # ird_preprocess_data_dag(config=config)
+    ird_scrape_data_dag()
+    ird_preprocess_data_dag(config=config)
     ird_rag_dag(config=config)

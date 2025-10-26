@@ -1,4 +1,5 @@
-from typing import List, Any
+from typing import List, Any, MutableMapping
+import json
 from prefect import task
 from llama_index.core import VectorStoreIndex, Document
 from llama_index.core.base.base_retriever import BaseRetriever
@@ -6,6 +7,24 @@ from src.initialize.init import (
     splitter, embedding_model, storage_context
 )
 from src.config.settings import TOP_K, VECTOR_QUERY_MODE
+
+
+def _sanitize_metadata(md: MutableMapping) -> dict:
+    sanitized = {}
+    for k, v in (md or {}).items():
+        key = str(k)
+        if v is None:
+            sanitized[key] = None
+        elif isinstance(v, (str, int, float)):
+            sanitized[key] = v
+        elif isinstance(v, (list, dict, tuple, set)):
+            try:
+                sanitized[key] = json.dumps(v)
+            except Exception:
+                sanitized[key] = str(v)
+        else:
+            sanitized[key] = str(v)
+    return sanitized
 
 
 def process_rag(docs_ird_case: List[Document], docs_pdf: List[Document]) -> BaseRetriever:
@@ -23,8 +42,27 @@ def process_rag(docs_ird_case: List[Document], docs_pdf: List[Document]) -> Base
     # combine all documents
     all_docs = docs_ird_case + docs_pdf
 
+    # sanitize documents' metadata and create new Document objects
+    sanitized_docs: List[Document] = []
+    for d in all_docs:
+        # different llama-index versions may store text in .text or .get_text()
+        text = getattr(d, "text", None) or getattr(d, "get_text", lambda: None)()
+        # fall back to str(d) if no text
+        if not text:
+            text = str(d)
+
+        # try to extract metadata from common attributes
+        md = {}
+        if hasattr(d, "metadata"):
+            md = d.metadata or {}
+        elif hasattr(d, "extra_info"):
+            md = d.extra_info or {}
+
+        sanitized = _sanitize_metadata(md)
+        sanitized_docs.append(Document(text=text, metadata=sanitized))
+
     # token text splitter
-    token_nodes = splitter.get_nodes_from_documents(documents=all_docs, show_progress=True)
+    token_nodes = splitter.get_nodes_from_documents(documents=sanitized_docs, show_progress=True)
 
     # create index
     index = VectorStoreIndex(
