@@ -28,22 +28,22 @@ deployments:
     tags: []
     description: "Deployment for ird_data_pipeline using Prefect."
   
-  # - name: ird-preprocess-pipeline-deployment
-  #   entrypoint: ./src/core/orchestrator.py:ird_preprocess_data_dag  # Change to your actual flow function if needed
-  #   work_pool:
-  #     name: ird-data-pool
-  #     job_variables:
-  #       image: cctongcastiel/ird_data_pipeline_scrape:0.0.1
-  #       dockerhub_username: "${{ secrets.DOCKER_USERNAME }}"
-  #       dockerhub_password: "${{ secrets.DOCKER_PASSWORD }}"
-  #   env:
-  #     AWS_OPENSEARCH_ENDPOINT: "${{ secrets.AWS_OPENSEARCH_ENDPOINT }}"
-  #     AWS_OPENSEARCH_USERNAME: "${{ secrets.AWS_OPENSEARCH_USERNAME }}"
-  #     AWS_OPENSEARCH_PASSWORD: "${{ secrets.AWS_OPENSEARCH_PASSWORD }}"
-  #     AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-  #     AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-  #   parameters: {}
-  #   schedule: null
-  #   tags: []
-  #   description: "Deployment for ird_preprocess_pipeline using Prefect."
+  - name: ird-preprocess-pipeline-deployment
+    entrypoint: ./src/core/orchestrator.py:ird_preprocess_data_dag  # Change to your actual flow function if needed
+    work_pool:
+      name: ird-data-pool
+      job_variables:
+        image: cctongcastiel/ird_data_pipeline_scrape:0.0.1
+        dockerhub_username: "${{ secrets.DOCKER_USERNAME }}"
+        dockerhub_password: "${{ secrets.DOCKER_PASSWORD }}"
+    env:
+      AWS_OPENSEARCH_ENDPOINT: "${{ secrets.AWS_OPENSEARCH_ENDPOINT }}"
+      AWS_OPENSEARCH_USERNAME: "${{ secrets.AWS_OPENSEARCH_USERNAME }}"
+      AWS_OPENSEARCH_PASSWORD: "${{ secrets.AWS_OPENSEARCH_PASSWORD }}"
+      AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+      AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+    parameters: {}
+    schedule: null
+    tags: []
+    description: "Deployment for ird_preprocess_pipeline using Prefect."
 
