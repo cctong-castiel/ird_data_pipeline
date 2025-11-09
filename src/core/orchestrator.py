@@ -1,20 +1,8 @@
 import pickle
 from prefect import flow
 from prefect.blocks.system import JSON
-from src.core.scrape.scraper import scrape_step
 from src.core.preprocess.preprocessor import preprocess_step
 from src.core.process.rag import rag_step
-
-
-@flow(name="ird_scrape_data_dag", description="A DAG to scrape IRD data")
-def ird_scrape_data_dag():
-
-    """
-    It is the main orchestrator function to run the entire IRD data pipeline including scraping, preprocessing, and RAG processing.
-    """
-
-    # Step 1: Scrape data
-    scrape_step()
 
 
 @flow(name="ird_preprocess_data_dag", description="A DAG to preprocess IRD data")
