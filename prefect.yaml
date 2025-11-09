@@ -8,7 +8,7 @@ build:
 
 deployments:
   - name: ird-data-pipeline-deployment
-    entrypoint: ./src/core/orchestrator.py:ird_scrape_data_dag  # Change to your actual flow function if needed
+    entrypoint: ./src/pipelines/scrape_flow.py:ird_scrape_data_dag  # Change to your actual flow function if needed
     work_pool:
       name: ird-data-pool
       job_variables:
