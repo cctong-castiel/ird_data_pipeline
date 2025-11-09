@@ -78,11 +78,11 @@ deployments:
         scrape_data: false
         save_pickle: true
         load_pickle: true
-        queries:
-          - "Which section of the Inland Revenue Ordinance imposed the basic charge of Salaries Tax?"
-          - "Which 2 machinery or plants does the lease in included?"
-          - "What does lease mean in legal term?"
-          - "which section provides a form for double taxation relief?"
+        # queries:
+        #   ["Which section of the Inland Revenue Ordinance imposed the basic charge of Salaries Tax?",
+        #   "Which 2 machinery or plants does the lease in included?",
+        #   "What does lease mean in legal term?",
+        #   "which section provides a form for double taxation relief?"]
     schedule: null
     tags: []
     description: "A DAG to perform RAG processing on IRD data"
