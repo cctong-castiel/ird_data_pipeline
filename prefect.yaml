@@ -33,7 +33,7 @@ deployments:
     work_pool:
       name: ird-data-pool
       job_variables:
-        image: cctongcastiel/ird_data_pipeline_scrape:0.0.1
+        image: cctongcastiel/ird_data_test_scrape:0.0.1
         dockerhub_username: "${{ secrets.DOCKER_USERNAME }}"
         dockerhub_password: "${{ secrets.DOCKER_PASSWORD }}"
     env:
@@ -51,6 +51,38 @@ deployments:
         scrape_data: false
         save_pickle: true
         load_pickle: true
+    schedule: null
+    tags: []
+    description: "Deployment for ird_preprocess_pipeline using Prefect."
+
+  - name: ird-rag-pipeline-deployment
+    entrypoint: ./src/pipelines/rag_flow.py:ird_rag_dag  # Change to your actual flow function if needed
+    work_pool:
+      name: ird-data-pool
+      job_variables:
+        image: cctongcastiel/ird_data_test_scrape:0.0.1
+        dockerhub_username: "${{ secrets.DOCKER_USERNAME }}"
+        dockerhub_password: "${{ secrets.DOCKER_PASSWORD }}"
+    env:
+      AWS_OPENSEARCH_ENDPOINT: "${{ secrets.AWS_OPENSEARCH_ENDPOINT }}"
+      AWS_OPENSEARCH_USERNAME: "${{ secrets.AWS_OPENSEARCH_USERNAME }}"
+      AWS_OPENSEARCH_PASSWORD: "${{ secrets.AWS_OPENSEARCH_PASSWORD }}"
+      AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+      AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+    parameters: 
+      config:
+        ird_pdf_md_dir: data/ird_pdfs_md_original
+        object_dir: src/core/objects/original
+        output_filename: original
+        run_pdf_to_md: false
+        scrape_data: false
+        save_pickle: true
+        load_pickle: true
+        queries:
+          - "Which section of the Inland Revenue Ordinance imposed the basic charge of Salaries Tax?"
+          - "Which 2 machinery or plants does the lease in included?"
+          - "What does lease mean in legal term?"
+          - "which section provides a form for double taxation relief?"
     schedule: null
     tags: []
     description: "Deployment for ird_preprocess_pipeline using Prefect."
