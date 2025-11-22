@@ -10,25 +10,25 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    services:
-      opensearch:
-        image: opensearchproject/opensearch:latest
-        env:
-          cluster.name: opensearch-cluster
-          node.name: opensearch-node1
-          discovery.type: single-node
-          bootstrap.memory_lock: "true"
-          OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
-          DISABLE_INSTALL_DEMO_CONFIG: "true"
-          DISABLE_SECURITY_PLUGIN: "true"
-        ports:
-          - 9200:9200
-          - 9600:9600
-        options: >-
-          --health-cmd="curl -s http://localhost:9200/_cluster/health || exit 1"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
+    # services:
+    #   opensearch:
+    #     image: opensearchproject/opensearch:latest
+    #     env:
+    #       cluster.name: opensearch-cluster
+    #       node.name: opensearch-node1
+    #       discovery.type: single-node
+    #       bootstrap.memory_lock: "true"
+    #       OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
+    #       DISABLE_INSTALL_DEMO_CONFIG: "true"
+    #       DISABLE_SECURITY_PLUGIN: "true"
+    #     ports:
+    #       - 9200:9200
+    #       - 9600:9600
+    #     options: >-
+    #       --health-cmd="curl -s http://localhost:9200/_cluster/health || exit 1"
+    #       --health-interval=10s
+    #       --health-timeout=5s
+    #       --health-retries=10
 
     steps:
       - name: Checkout
@@ -45,7 +45,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Prefect Deploy
+      - name: Install requirements.txt
         env:
           PREFECT_API_KEY: ${{ secrets.PREFECT_API_KEY }}
           PREFECT_API_URL: ${{ secrets.PREFECT_API_URL }}
@@ -54,8 +54,15 @@ jobs:
           OPENSEARCH_INDEX_NAME: ${{ secrets.OPENSEARCH_INDEX_NAME }}
           OPENSEARCH_ENDPOINT: ${{ secrets.OPENSEARCH_ENDPOINT }}
           OPENSEARCH_SEARCH_PIPELINE: ${{ secrets.OPENSEARCH_SEARCH_PIPELINE }}
+          AWS_OPENSEARCH_ENDPOINT: ${{ secrets.AWS_OPENSEARCH_ENDPOINT }}
+          AWS_OPENSEARCH_USERNAME: ${{ secrets.AWS_OPENSEARCH_USERNAME }}
+          AWS_OPENSEARCH_PASSWORD: ${{ secrets.AWS_OPENSEARCH_PASSWORD }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          pip install -r lib/requirements.txt
+          pip install --no-cache-dir -r lib/requirements.txt
+      
+      - name: Run a test file
+        run: |
           export PYTHONPATH=.
-          curl -X PUT "$OPENSEARCH_ENDPOINT:9200/_cluster/settings" -H 'Content-Type: application/json' -d '{"persistent":{"cluster.blocks.create_index":null}}'
-          prefect deploy --name ird-data-pipeline-deployment
+          python tests/test_ird_scrapy.py
