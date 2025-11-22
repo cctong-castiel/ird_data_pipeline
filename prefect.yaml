@@ -1,5 +1,11 @@
 version: 2
 
+pull:
+- prefect.deployments.steps.git_clone:
+    repository: https://github.com/cctong-castiel/ird_data_pipeline.git
+    branch: feature/CT/preprocessing_ird_pdfs_segments
+    access_token: "{{ $GITHUB_ACCESS_TOKEN }}"
+
 build:
   - prefect.deployments.steps.set_working_directory:
       directory: ./
@@ -64,6 +70,8 @@ deployments:
         dockerhub_username: "${{ secrets.DOCKER_USERNAME }}"
         dockerhub_password: "${{ secrets.DOCKER_PASSWORD }}"
     env:
+      PREFECT_API_KEY: "${{ secrets.PREFECT_API_KEY }}"
+      PREFECT_API_URL: "${{ secrets.PREFECT_API_URL }}"
       AWS_OPENSEARCH_ENDPOINT: "${{ secrets.AWS_OPENSEARCH_ENDPOINT }}"
       AWS_OPENSEARCH_USERNAME: "${{ secrets.AWS_OPENSEARCH_USERNAME }}"
       AWS_OPENSEARCH_PASSWORD: "${{ secrets.AWS_OPENSEARCH_PASSWORD }}"
@@ -78,11 +86,11 @@ deployments:
         scrape_data: false
         save_pickle: true
         load_pickle: true
-        # queries:
-        #   ["Which section of the Inland Revenue Ordinance imposed the basic charge of Salaries Tax?",
-        #   "Which 2 machinery or plants does the lease in included?",
-        #   "What does lease mean in legal term?",
-        #   "which section provides a form for double taxation relief?"]
+        queries:
+          - "Which section of the Inland Revenue Ordinance imposed the basic charge of Salaries Tax?"
+          - "Which 2 machinery or plants does the lease in included?"
+          - "What does lease mean in legal term?"
+          - "which section provides a form for double taxation relief?"
     schedule: null
     tags: []
     description: "A DAG to perform RAG processing on IRD data"
