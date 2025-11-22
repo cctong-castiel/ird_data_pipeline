@@ -60,6 +60,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          pip install -r lib/requirements.txt
+          pip install --no-cache-dir -r lib/requirements.txt
           export PYTHONPATH=.
           prefect deploy --name ird-data-pipeline-deployment
