@@ -45,7 +45,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Prefect Deploy
+      - name: Install requirements.txt
         env:
           PREFECT_API_KEY: ${{ secrets.PREFECT_API_KEY }}
           PREFECT_API_URL: ${{ secrets.PREFECT_API_URL }}
@@ -61,5 +61,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           pip install --no-cache-dir -r lib/requirements.txt
+      
+      - name: Deploy ird-data-pipeline-deployment
+        run: |
           export PYTHONPATH=.
           prefect deploy --name ird-data-pipeline-deployment
