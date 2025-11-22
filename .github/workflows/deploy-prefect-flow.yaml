@@ -62,7 +62,7 @@ jobs:
         run: |
           pip install --no-cache-dir -r lib/requirements.txt
       
-      - name: Deploy ird-data-pipeline-deployment
+      - name: Run a test file
         run: |
           export PYTHONPATH=.
-          prefect deploy --name ird-data-pipeline-deployment
+          python tests/test_ird_scrapy.py
