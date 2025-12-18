@@ -56,7 +56,14 @@ export PYTHONPATH=.
     - save_pickle: false
     - load_pickle: true
 
-6. Prefect server
+6. Build local Docker image
+
+```
+docker build -f docker/Dockerfile -t cctongcastiel/ird_data_pipeline_scrape:0.0.1 .
+docker push cctongcastiel/ird_data_pipeline_scrape:0.0.1
+```
+
+7. Prefect server
 
 - start prefect server
 
@@ -82,9 +89,8 @@ An example to run a deployment
 prefect deployment run 'ird_scrape_data_dag/ird-data-pipeline-deployment'
 ```
 
-7. Build local Docker image
+After started the Prefect server, can browse the local host and get the below UI. You can start triggering the workflows.
 
-```
-docker build -f docker/Dockerfile -t cctongcastiel/ird_data_pipeline_scrape:0.0.1 .
-docker push cctongcastiel/ird_data_pipeline_scrape:0.0.1
-```
+![1766068372572](assets/imgs/1766068372572.png)
+
+![1766068579625](assets/imgs/1766068579625.png)
