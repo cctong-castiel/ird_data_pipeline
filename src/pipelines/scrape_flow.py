@@ -11,17 +11,8 @@ def scrape_step():
     spiders to collect IRD case and PDF metadata,
     """
 
-    # init
-    # ird_table_scraper = IrdTableScraper()
-    # ird_pdf_metadata_scraper = IrdPdfMetadataScraper()
-
     # run
-    # ird_table_scraper.scrape
     run_spider(spider=IrdCaseContentSpider)
-
-    # ird_pdf_metadata_scraper.scrape
-    # download_one_pdf(destination_directory=IRD_PDF_DIR)
-    # download_pdfs(destination_directory=IRD_PDF_DIR)
 
 
 @flow(name="ird_scrape_data_dag", description="A DAG to scrape IRD data")
