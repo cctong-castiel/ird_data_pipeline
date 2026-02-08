@@ -4,6 +4,10 @@
 
 It is a github repository for building a pipeline to scrape IRD table data from the iRD website([https://www.ird.gov.hk/eng/ppr/arc.htm](https://www.ird.gov.hk/eng/ppr/arc.htm)), along with the first table (No. 1-63) ([https://www.ird.gov.hk/eng/ppr/dip.htm](https://www.ird.gov.hk/eng/ppr/dip.htm)). Prefect is used as the pipeline orchestrator with 3 main steps. Scrape flow, Preprocess flow and Rag flow. The documents scraped will be stored in a vector db and query with RAG.
 
+Prefect is used as an orchestrator tool to streamline the scraping process in the 2 ird.gov.hk links above automatically. Then the data is passed to preprocess flow to convert the pdf format to markdown then do the cleansing. Human in the loop in needed between pdf files downloaded and cleansing. The quality of the markdown files is extremely important for the vector search Rag flow(Cromadb or opensearch). In this part, docling from IBM is used since it is the best model to convert pdf to markdown comparing to fitz, unstruturedio, etc. Finally, it passes to Rag flow to do the vector search. 
+
+The project is finished in *1 week*.
+
 ### setup and installation instruction
 
 1. Start the opensearch local instance with docker/opensearch/docker-compose.yml
