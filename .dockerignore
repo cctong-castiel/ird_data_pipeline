@@ -1,0 +1,12 @@
+**/*.pyc
+**/__pycache__
+**/.git
+**/.ipynb_checkpoints
+**/.env
+**/chroma_db/
+**/data/
+
+assets/**
+docs/**
+.env
+.gitignore

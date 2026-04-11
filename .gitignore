@@ -196,3 +196,4 @@ cython_debug/
 .DS_Store
 data/**/*
 tests/output_files/**/*
+tests/experiments.ipynb

@@ -67,7 +67,7 @@ docker build -f docker/Dockerfile -t cctongcastiel/ird_data_pipeline_scrape:0.0.
 docker push cctongcastiel/ird_data_pipeline_scrape:0.0.1
 ```
 
-7. Prefect server
+7. Prefect server locally
 
 - start prefect server
 
@@ -98,3 +98,13 @@ After started the Prefect server, can browse the local host and get the below UI
 ![1766068372572](assets/imgs/1766068372572.png)
 
 ![1766068579625](assets/imgs/1766068579625.png)
+
+8. Run Prefect Cloud for deployment
+Managed worker doesn't need to run the command to start the worker. The Prefect Cloud handle it. Thus, just run the below command only is enough.
+
+- Run deployment
+```
+prefect deploy --prefect-file prefect_cloud.yaml
+```
+
+Then run the command at the end of the output in the above command.

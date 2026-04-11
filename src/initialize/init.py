@@ -1,13 +1,18 @@
 import torch
-import chromadb
 from llama_parse import LlamaParse
 from llama_index.core.node_parser import TokenTextSplitter
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from llama_index.core import StorageContext
 from docling.document_converter import DocumentConverter
-from llama_index.vector_stores.chroma import ChromaVectorStore
+from src.core.vector_stores.factory import VectorStoreFactory
 from src.config.load_env import Environment
-from src.config.settings import *
+from src.config.settings import (
+    CHUNK_SIZE, 
+    CHUNK_OVERLAP,
+    EMBEDDING_MODEL_NAME,
+    MAX_LENGTH,
+    NUM_WORKERS,
+    STORE_TYPE
+)
 
 # set device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -37,15 +42,8 @@ embedding_model = HuggingFaceEmbedding(
     max_length=MAX_LENGTH, 
     device=device
 )
+embedding_fn = getattr(embedding_model, "embed", embedding_model)
 
-try:
-    embedding_fn = getattr(embedding_model, "embed", embedding_model)
-    chroma_client = chromadb.EphemeralClient()
-    chroma_collection = chroma_client.create_collection(name="ird_collection")
-    vector_store = ChromaVectorStore(persist_directory='chroma_db', chroma_collection=chroma_collection, embedding_function=embedding_fn)
-    storage_context = StorageContext.from_defaults(vector_store=vector_store)
-except Exception as e:
-    print(f"Error initializing OpensearchVectorStore: {e}")
-    opensearch_client = None
-    vector_store = None
-    storage_context = None
+vector_store_factory = VectorStoreFactory(embedding_fn=embedding_fn, collection_name="ird_collection", index_name="ird_index")
+vector_store = vector_store_factory.get_vector_store(STORE_TYPE)
+storage_context = vector_store_factory.get_storage_context(STORE_TYPE)

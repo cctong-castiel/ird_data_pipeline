@@ -1,0 +1,102 @@
+version: 2
+
+pull:
+- prefect.deployments.steps.git_clone:
+    repository: https://github.com/cctong-castiel/ird_data_pipeline.git
+    branch: feature/CT/preprocessing_ird_pdfs_segments
+    access_token: "{{ $GITHUB_ACCESS_TOKEN }}"
+
+build:
+  - prefect.deployments.steps.set_working_directory:
+      directory: ./
+  - prefect.deployments.steps.run_shell_script:
+      script: pip install -r lib/requirements.txt
+
+deployments:
+  - name: ird-data-pipeline-deployment
+    entrypoint: ./src/pipelines/scrape_flow.py:ird_scrape_data_dag  # Change to your actual flow function if needed
+    work_pool:
+      name: ird-data-pool
+      job_variables:
+        image: prefecthq/prefect:3-python3.11
+        env:
+          LLAMAINDEX_KEY: "{{ prefect.blocks.secret.llamaindex-key }}"
+          OPENSEARCH_INITIAL_ADMIN_PASSWORD: "{{ prefect.blocks.secret.opensearch-initial-admin-passowrd }}"
+          OPENSEARCH_INDEX_NAME: "{{ prefect.blocks.secret.opensearch-index-name }}"
+          OPENSEARCH_ENDPOINT: "{{ prefect.blocks.secret.opensearch-endpoint }}"
+          OPENSEARCH_SEARCH_PIPELINE: "{{ prefect.blocks.secret.opensearch-search-pipeline }}"
+          AWS_OPENSEARCH_ENDPOINT: "{{ prefect.blocks.secret.aws-opensearch-endpoint }}"
+          AWS_OPENSEARCH_USERNAME: "{{ prefect.blocks.secret.aws-opensearch-username }}"
+          AWS_OPENSEARCH_PASSWORD: "{{ prefect.blocks.secret.aws-opensearch-password }}"
+          AWS_ACCESS_KEY_ID: "{{ prefect.blocks.secret.aws-access-key-id }}"
+          AWS_SECRET_ACCESS_KEY: "{{ prefect.blocks.secret.aws-secret-access-key }}"
+    parameters: {}
+    schedule: null
+    tags: []
+    description: "Deployment for ird_data_pipeline using Prefect."
+  
+  - name: ird-preprocess-pipeline-deployment
+    entrypoint: ./src/pipelines/preprocess_flow.py:ird_preprocess_data_dag  # Change to your actual flow function if needed
+    work_pool:
+      name: ird-data-pool
+      job_variables:
+        image: prefecthq/prefect:3-python3.11
+        env:
+          LLAMAINDEX_KEY: "{{ prefect.blocks.secret.llamaindex-key }}"
+          OPENSEARCH_INITIAL_ADMIN_PASSWORD: "{{ prefect.blocks.secret.opensearch-initial-admin-passowrd }}"
+          OPENSEARCH_INDEX_NAME: "{{ prefect.blocks.secret.opensearch-index-name }}"
+          OPENSEARCH_ENDPOINT: "{{ prefect.blocks.secret.opensearch-endpoint }}"
+          OPENSEARCH_SEARCH_PIPELINE: "{{ prefect.blocks.secret.opensearch-search-pipeline }}"
+          AWS_OPENSEARCH_ENDPOINT: "{{ prefect.blocks.secret.aws-opensearch-endpoint }}"
+          AWS_OPENSEARCH_USERNAME: "{{ prefect.blocks.secret.aws-opensearch-username }}"
+          AWS_OPENSEARCH_PASSWORD: "{{ prefect.blocks.secret.aws-opensearch-password }}"
+          AWS_ACCESS_KEY_ID: "{{ prefect.blocks.secret.aws-access-key-id }}"
+          AWS_SECRET_ACCESS_KEY: "{{ prefect.blocks.secret.aws-secret-access-key }}"
+    parameters: 
+      config:
+        ird_pdf_md_dir: data/ird_pdfs_md_original
+        object_dir: src/core/objects/original
+        output_filename: original
+        run_pdf_to_md: false
+        scrape_data: false
+        save_pickle: true
+        load_pickle: true
+    schedule: null
+    tags: []
+    description: "Deployment for ird_preprocess_pipeline using Prefect."
+
+  - name: ird-rag-pipeline-deployment
+    entrypoint: ./src/pipelines/rag_flow.py:ird_rag_dag  # Change to your actual flow function if needed
+    work_pool:
+      name: ird-data-pool
+      job_variables:
+        image: prefecthq/prefect:3-python3.11
+        env:
+          LLAMAINDEX_KEY: "{{ prefect.blocks.secret.llamaindex-key }}"
+          OPENSEARCH_INITIAL_ADMIN_PASSWORD: "{{ prefect.blocks.secret.opensearch-initial-admin-passowrd }}"
+          OPENSEARCH_INDEX_NAME: "{{ prefect.blocks.secret.opensearch-index-name }}"
+          OPENSEARCH_ENDPOINT: "{{ prefect.blocks.secret.opensearch-endpoint }}"
+          OPENSEARCH_SEARCH_PIPELINE: "{{ prefect.blocks.secret.opensearch-search-pipeline }}"
+          AWS_OPENSEARCH_ENDPOINT: "{{ prefect.blocks.secret.aws-opensearch-endpoint }}"
+          AWS_OPENSEARCH_USERNAME: "{{ prefect.blocks.secret.aws-opensearch-username }}"
+          AWS_OPENSEARCH_PASSWORD: "{{ prefect.blocks.secret.aws-opensearch-password }}"
+          AWS_ACCESS_KEY_ID: "{{ prefect.blocks.secret.aws-access-key-id }}"
+          AWS_SECRET_ACCESS_KEY: "{{ prefect.blocks.secret.aws-secret-access-key }}"
+    parameters: 
+      config:
+        ird_pdf_md_dir: data/ird_pdfs_md_original
+        object_dir: src/core/objects/original
+        output_filename: original
+        run_pdf_to_md: false
+        scrape_data: false
+        save_pickle: true
+        load_pickle: true
+        queries:
+          - "Which section of the Inland Revenue Ordinance imposed the basic charge of Salaries Tax?"
+          - "Which 2 machinery or plants does the lease in included?"
+          - "What does lease mean in legal term?"
+          - "which section provides a form for double taxation relief?"
+    schedule: null
+    tags: []
+    description: "A DAG to perform RAG processing on IRD data"
+
