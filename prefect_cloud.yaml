@@ -3,7 +3,8 @@ version: 2
 pull:
 - prefect.deployments.steps.git_clone:
     repository: https://github.com/cctong-castiel/ird_data_pipeline.git
-    branch: feature/CT/preprocessing_ird_pdfs_segments
+    # branch: feature/CT/preprocessing_ird_pdfs_segments
+    branch: feature/cloud_deployment_opensearch
     access_token: "{{ $GITHUB_ACCESS_TOKEN }}"
 
 build:
