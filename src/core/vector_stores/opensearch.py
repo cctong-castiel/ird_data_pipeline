@@ -18,8 +18,8 @@ class OpensearchClient:
     def initialize(self):
         try:
             self.client = self.__build_client()
-            self.vector_store = self.__build_vector_store(self.client, self.index_name, self.embedding_fn)
-            self.storage_context = self.__build_storage_context(self.vector_store)
+            self.vector_store = self.__build_vector_store()
+            self.storage_context = self.__build_storage_context()
         except Exception as e:
             print(f"Error initializing Opensearch: {e}")
             self.client = None
@@ -47,12 +47,12 @@ class OpensearchClient:
         )
         return opensearch_client
 
-    def __build_vector_store(client, index_name, embedding_fn):
-        vector_store = OpensearchVectorStore(client=client, index_name=index_name, embedding_function=embedding_fn)
+    def __build_vector_store(self):
+        vector_store = OpensearchVectorStore(client=self.client, index_name=self.index_name, embedding_function=self.embedding_fn)
         return vector_store
 
-    def __build_storage_context(vector_store):
-        storage_context = StorageContext.from_defaults(vector_store=vector_store)
+    def __build_storage_context(self):
+        storage_context = StorageContext.from_defaults(vector_store=self.vector_store)
         return storage_context
 
 
@@ -67,8 +67,8 @@ class AWSOpensearchClient(OpensearchClient):
     def initialize(self):
         try:
             self.client = self.__build_client()
-            self.vector_store = self.__build_vector_store(self.client, self.index_name, self.embedding_fn)
-            self.storage_context = self.__build_storage_context(self.vector_store)
+            self.vector_store = self.__build_vector_store()
+            self.storage_context = self.__build_storage_context()
         except Exception as e:
             print(f"Error initializing AWS Opensearch: {e}")
             self.client = None
