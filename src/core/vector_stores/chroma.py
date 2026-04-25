@@ -7,11 +7,6 @@ class ChromaClient:
     def __init__(self, embedding_fn, collection_name="ird_collection"):
         self.embedding_fn = embedding_fn
         self.collection_name = collection_name
-        self.client = None
-        self.vector_store = None
-        self.storage_context = None
-
-    def initialize(self):
         try:
             self.client = self.__build_client()
             self.vector_store = self.__build_vector_store()
@@ -20,7 +15,7 @@ class ChromaClient:
             print(f"Error initializing Chroma: {e}")
             self.client = None
             self.vector_store = None
-            self.storage_context = None
+            self.storage_context = None        
 
     @staticmethod
     def __build_client():

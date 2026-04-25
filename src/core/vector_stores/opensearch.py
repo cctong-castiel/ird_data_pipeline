@@ -10,11 +10,6 @@ from src.config.settings import DIM, EMBEDDING_FIELD, TEXT_FIELD
 class OpensearchClient:
     def __init__(self, index_name="ird_index"):
         self.index_name = index_name
-        self.client = None
-        self.vector_store = None
-        self.storage_context = None
-
-    def initialize(self):
         try:
             self.client = self.__build_client()
             self.vector_store = self.__build_vector_store()
@@ -23,7 +18,7 @@ class OpensearchClient:
             print(f"Error initializing Opensearch: {e}")
             self.client = None
             self.vector_store = None
-            self.storage_context = None
+            self.storage_context = None        
 
     @staticmethod
     def __build_client():
@@ -58,11 +53,6 @@ class OpensearchClient:
 class AWSOpensearchClient(OpensearchClient):
     def __init__(self, index_name="ird_index"):
         self.index_name = index_name
-        self.client = None
-        self.vector_store = None
-        self.storage_context = None
-
-    def initialize(self):
         try:
             self.client = self.__build_client()
             self.vector_store = self.__build_vector_store()
@@ -71,7 +61,7 @@ class AWSOpensearchClient(OpensearchClient):
             print(f"Error initializing AWS Opensearch: {e}")
             self.client = None
             self.vector_store = None
-            self.storage_context = None
+            self.storage_context = None        
 
     @staticmethod
     def __build_client():
