@@ -120,3 +120,7 @@ class Environment(ConfigBase):
 #         self.AWS_OPENSEARCH_PASSWORD = os.getenv("AWS_OPENSEARCH_PASSWORD")
 #         self.AWS_OPENSEARCH_KEY = os.getenv("AWS_ACCESS_KEY_ID")
 #         self.AWS_OPENSEARCH_SECRET = os.getenv("AWS_SECRET_ACCESS_KEY")
+
+
+# load environment variables
+ENV = Environment()

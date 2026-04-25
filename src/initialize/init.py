@@ -4,7 +4,7 @@ from llama_index.core.node_parser import TokenTextSplitter
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from docling.document_converter import DocumentConverter
 from src.core.vector_stores.factory import VectorStoreFactory
-from src.config.load_env import Environment
+from src.config.load_env import ENV
 from src.config.settings import (
     CHUNK_SIZE, 
     CHUNK_OVERLAP,
@@ -16,9 +16,6 @@ from src.config.settings import (
 
 # set device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-# load environment variables
-ENV = Environment()
 
 
 # RAG initialization
