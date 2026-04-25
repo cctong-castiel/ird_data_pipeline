@@ -8,8 +8,7 @@ from src.config.settings import DIM, EMBEDDING_FIELD, TEXT_FIELD
 
 
 class OpensearchClient:
-    def __init__(self, embedding_fn, index_name="ird_index"):
-        self.embedding_fn = embedding_fn
+    def __init__(self, index_name="ird_index"):
         self.index_name = index_name
         self.client = None
         self.vector_store = None
@@ -48,7 +47,7 @@ class OpensearchClient:
         return opensearch_client
 
     def __build_vector_store(self):
-        vector_store = OpensearchVectorStore(client=self.client, index_name=self.index_name, embedding_function=self.embedding_fn)
+        vector_store = OpensearchVectorStore(client=self.client)
         return vector_store
 
     def __build_storage_context(self):
@@ -57,8 +56,7 @@ class OpensearchClient:
 
 
 class AWSOpensearchClient(OpensearchClient):
-    def __init__(self, embedding_fn, index_name="ird_index"):
-        self.embedding_fn = embedding_fn
+    def __init__(self, index_name="ird_index"):
         self.index_name = index_name
         self.client = None
         self.vector_store = None

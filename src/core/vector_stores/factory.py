@@ -8,8 +8,8 @@ class VectorStoreFactory:
         # Register the store types and their corresponding initialization
         # Call the Clients initialize() only once and reuse the same instance for all requests
         self._chroma_instance = ChromaClient(embedding_fn=embedding_fn, collection_name=collection_name).initialize()
-        self._opensearch_instance = OpensearchClient(embedding_fn=embedding_fn, index_name=index_name).initialize()
-        # self._aws_opensearch_instance = AWSOpensearchClient(embedding_fn=embedding_fn, index_name=index_name).initialize()
+        self._opensearch_instance = OpensearchClient(index_name=index_name).initialize()
+        # self._aws_opensearch_instance = AWSOpensearchClient(index_name=index_name).initialize()
 
         self._builders: Dict[str, Callable[..., Any]] = {
             "chroma": self._chroma_instance,

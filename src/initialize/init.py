@@ -42,5 +42,5 @@ embedding_model = HuggingFaceEmbedding(
 embedding_fn = getattr(embedding_model, "embed", embedding_model)
 
 vector_store_factory = VectorStoreFactory(embedding_fn=embedding_fn, collection_name="ird_collection", index_name="ird_index")
-vector_store = vector_store_factory.get_vector_store(STORE_TYPE)
-storage_context = vector_store_factory.get_storage_context(STORE_TYPE)
+vector_store = vector_store_factory.get_vector_store(store_type=STORE_TYPE)
+storage_context = vector_store_factory.get_storage_context(store_type=STORE_TYPE)

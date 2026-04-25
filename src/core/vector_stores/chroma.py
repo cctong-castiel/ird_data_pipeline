@@ -28,7 +28,7 @@ class ChromaClient:
         return chroma_client
 
     def __build_vector_store(self):
-        chroma_collection = self.client.create_collection(name=self.collection_name)
+        chroma_collection = self.client.get_or_create_collection(name=self.collection_name)
         vector_store = ChromaVectorStore(persist_directory='chroma_db', chroma_collection=chroma_collection, embedding_function=self.embedding_fn)
         return vector_store
 
