@@ -3,7 +3,7 @@ from llama_index.vector_stores.opensearch import OpensearchVectorStore, Opensear
 from requests_aws4auth import AWS4Auth
 import boto3
 
-from src.config.load_env import ENV
+from src.initialize.init import ENV
 from src.config.settings import DIM, EMBEDDING_FIELD, TEXT_FIELD
 
 
