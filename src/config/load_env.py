@@ -70,31 +70,6 @@ class ConfigBase:
                 self._config[name] = value
         super().__setattr__(name, value)
 
-# class Environment(ConfigBase):
-#     """
-#     A configuration class that loads specific environment variables.
-
-#     Attributes:
-#         LLAMAINDEX_KEY (str): The LlamaIndex API key.
-#         OPENSEARCH_INITIAL_ADMIN_PASSWORD (str): The OpenSearch admin password.
-#     """
-
-#     def __init__(self):
-#         """
-#         Initialize the Environment instance and sets up specific environment variables.
-#         """
-#         super().__init__()
-#         self.LLAMAINDEX_KEY = ("LLAMAINDEX_KEY", str, Secret.load("llamaindex-key", _sync=True).get())
-#         self.OPENSEARCH_ADMIN_PASSWORD = ("OPENSEARCH_INITIAL_ADMIN_PASSWORD", str)
-#         self.OPENSEARCH_INDEX_NAME = ("OPENSEARCH_INDEX_NAME", str)
-#         self.OPENSEARCH_ENDPOINT = ("OPENSEARCH_ENDPOINT", str)
-#         self.OPENSEARCH_SEARCH_PIPELINE = ("OPENSEARCH_SEARCH_PIPELINE", str)
-#         self.AWS_OPENSEARCH_ENDPOINT = ("AWS_OPENSEARCH_ENDPOINT", str, Secret.load("aws-opensearch-endpoint", _sync=True).get())
-#         self.AWS_OPENSEARCH_USERNAME = ("AWS_OPENSEARCH_USERNAME", str, Secret.load("aws-opensearch-username", _sync=True).get())
-#         self.AWS_OPENSEARCH_PASSWORD = ("AWS_OPENSEARCH_PASSWORD", str, Secret.load("aws-opensearch-password", _sync=True).get())
-#         self.AWS_OPENSEARCH_KEY = ("AWS_ACCESS_KEY_ID", str, Secret.load("aws-access-key-id", _sync=True).get())
-#         self.AWS_OPENSEARCH_SECRET = ("AWS_SECRET_ACCESS_KEY", str, Secret.load("aws-secret-access-key", _sync=True).get())
-
 class Environment(ConfigBase):
     """
     A configuration class that loads specific environment variables.
@@ -109,14 +84,39 @@ class Environment(ConfigBase):
         Initialize the Environment instance and sets up specific environment variables.
         """
         super().__init__()
-        # llamaindex_key = Secret.load("llamaindex-key", _sync=True).get()
-        self.LLAMAINDEX_KEY = os.getenv("LLAMAINDEX_KEY")
-        self.OPENSEARCH_ADMIN_PASSWORD = os.getenv("OPENSEARCH_INITIAL_ADMIN_PASSWORD")
-        self.OPENSEARCH_INDEX_NAME = os.getenv("OPENSEARCH_INDEX_NAME")
-        self.OPENSEARCH_ENDPOINT = os.getenv("OPENSEARCH_ENDPOINT")
-        self.OPENSEARCH_SEARCH_PIPELINE = os.getenv("OPENSEARCH_SEARCH_PIPELINE")
-        self.AWS_OPENSEARCH_ENDPOINT = os.getenv("AWS_OPENSEARCH_ENDPOINT")
-        self.AWS_OPENSEARCH_USERNAME = os.getenv("AWS_OPENSEARCH_USERNAME")
-        self.AWS_OPENSEARCH_PASSWORD = os.getenv("AWS_OPENSEARCH_PASSWORD")
-        self.AWS_OPENSEARCH_KEY = os.getenv("AWS_ACCESS_KEY_ID")
-        self.AWS_OPENSEARCH_SECRET = os.getenv("AWS_SECRET_ACCESS_KEY")
+        self.LLAMAINDEX_KEY = ("LLAMAINDEX_KEY", str, Secret.load("llamaindex-key", _sync=True).get())
+        self.OPENSEARCH_ADMIN_PASSWORD = ("OPENSEARCH_INITIAL_ADMIN_PASSWORD", str)
+        self.OPENSEARCH_INDEX_NAME = ("OPENSEARCH_INDEX_NAME", str)
+        self.OPENSEARCH_ENDPOINT = ("OPENSEARCH_ENDPOINT", str)
+        self.OPENSEARCH_SEARCH_PIPELINE = ("OPENSEARCH_SEARCH_PIPELINE", str)
+        self.AWS_OPENSEARCH_ENDPOINT = ("AWS_OPENSEARCH_ENDPOINT", str, Secret.load("aws-opensearch-endpoint", _sync=True).get())
+        self.AWS_OPENSEARCH_USERNAME = ("AWS_OPENSEARCH_USERNAME", str, Secret.load("aws-opensearch-username", _sync=True).get())
+        self.AWS_OPENSEARCH_PASSWORD = ("AWS_OPENSEARCH_PASSWORD", str, Secret.load("aws-opensearch-password", _sync=True).get())
+        self.AWS_OPENSEARCH_KEY = ("AWS_ACCESS_KEY_ID", str, Secret.load("aws-access-key-id", _sync=True).get())
+        self.AWS_OPENSEARCH_SECRET = ("AWS_SECRET_ACCESS_KEY", str, Secret.load("aws-secret-access-key", _sync=True).get())
+
+# class Environment(ConfigBase):
+#     """
+#     A configuration class that loads specific environment variables.
+
+#     Attributes:
+#         LLAMAINDEX_KEY (str): The LlamaIndex API key.
+#         OPENSEARCH_INITIAL_ADMIN_PASSWORD (str): The OpenSearch admin password.
+#     """
+
+#     def __init__(self):
+#         """
+#         Initialize the Environment instance and sets up specific environment variables.
+#         """
+#         super().__init__()
+#         # llamaindex_key = Secret.load("llamaindex-key", _sync=True).get()
+#         self.LLAMAINDEX_KEY = os.getenv("LLAMAINDEX_KEY")
+#         self.OPENSEARCH_ADMIN_PASSWORD = os.getenv("OPENSEARCH_INITIAL_ADMIN_PASSWORD")
+#         self.OPENSEARCH_INDEX_NAME = os.getenv("OPENSEARCH_INDEX_NAME")
+#         self.OPENSEARCH_ENDPOINT = os.getenv("OPENSEARCH_ENDPOINT")
+#         self.OPENSEARCH_SEARCH_PIPELINE = os.getenv("OPENSEARCH_SEARCH_PIPELINE")
+#         self.AWS_OPENSEARCH_ENDPOINT = os.getenv("AWS_OPENSEARCH_ENDPOINT")
+#         self.AWS_OPENSEARCH_USERNAME = os.getenv("AWS_OPENSEARCH_USERNAME")
+#         self.AWS_OPENSEARCH_PASSWORD = os.getenv("AWS_OPENSEARCH_PASSWORD")
+#         self.AWS_OPENSEARCH_KEY = os.getenv("AWS_ACCESS_KEY_ID")
+#         self.AWS_OPENSEARCH_SECRET = os.getenv("AWS_SECRET_ACCESS_KEY")
