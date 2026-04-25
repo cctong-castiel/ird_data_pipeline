@@ -13,7 +13,7 @@ class ChromaClient:
 
     def initialize(self):
         try:
-            self.client = self.__build_client(self.embedding_fn)
+            self.client = self.__build_client()
             self.vector_store = self.__build_vector_store(self.client, self.collection_name, self.embedding_fn)
             self.storage_context = self.__build_storage_context(self.vector_store)
         except Exception as e:
@@ -22,7 +22,8 @@ class ChromaClient:
             self.vector_store = None
             self.storage_context = None
 
-    def __build_client(embedding_fn):
+    @staticmethod
+    def __build_client():
         chroma_client = chromadb.EphemeralClient()
         return chroma_client
 

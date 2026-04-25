@@ -17,7 +17,7 @@ class OpensearchClient:
 
     def initialize(self):
         try:
-            self.client = self.__build_client(self.embedding_fn)
+            self.client = self.__build_client()
             self.vector_store = self.__build_vector_store(self.client, self.index_name, self.embedding_fn)
             self.storage_context = self.__build_storage_context(self.vector_store)
         except Exception as e:
@@ -26,7 +26,8 @@ class OpensearchClient:
             self.vector_store = None
             self.storage_context = None
 
-    def __build_client(embedding_fn):
+    @staticmethod
+    def __build_client():
         opensearch_client = OpensearchVectorClient(
             endpoint=ENV.OPENSEARCH_ENDPOINT,
             index=ENV.OPENSEARCH_INDEX_NAME,
@@ -65,7 +66,7 @@ class AWSOpensearchClient(OpensearchClient):
 
     def initialize(self):
         try:
-            self.client = self.__build_client(self.embedding_fn)
+            self.client = self.__build_client()
             self.vector_store = self.__build_vector_store(self.client, self.index_name, self.embedding_fn)
             self.storage_context = self.__build_storage_context(self.vector_store)
         except Exception as e:
@@ -74,7 +75,8 @@ class AWSOpensearchClient(OpensearchClient):
             self.vector_store = None
             self.storage_context = None
 
-    def __build_client(embedding_fn):
+    @staticmethod
+    def __build_client():
         session = boto3.Session()
         credentials = session.get_credentials()
         awsauth = AWS4Auth(
