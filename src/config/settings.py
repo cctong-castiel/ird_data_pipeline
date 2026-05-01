@@ -1,5 +1,9 @@
 from llama_index.core.vector_stores.types import VectorStoreQueryMode
+from prefect import get_run_logger
 
+
+# Prefect logger
+logger = get_run_logger()
 
 # scraping settings
 IRD_PDF_METADATA_URL = "https://www.ird.gov.hk/eng/ppr/dip.htm"

@@ -6,7 +6,8 @@ from llama_index.core.base.base_retriever import BaseRetriever
 from src.initialize.init import (
     splitter, embedding_model, storage_context
 )
-from src.config.settings import TOP_K, VECTOR_QUERY_MODE
+from src.config.settings import TOP_K
+from src.config.settings import logger
 
 
 def _sanitize_metadata(md: MutableMapping) -> dict:
@@ -112,6 +113,8 @@ def rag_step(queries: List[str], docs_ird_case: List[Document], docs_pdf: List[D
     responses = []
     for index, query in enumerate(queries):
         response = retrieve_documents(query=query, retriever=retriever)
+        logger.info(f"Query {index + 1}:\n{query}\n")
+        logger.info(f"Response {index + 1} from the retriever:\n{response}\n")
         responses.append(response)
 
     return responses
