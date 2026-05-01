@@ -1,10 +1,10 @@
 from llama_index.core import StorageContext
 from llama_index.vector_stores.opensearch import OpensearchVectorStore, OpensearchVectorClient
-from requests_aws4auth import AWS4Auth
+from opensearchpy import AWSV4SignerAuth
 import boto3
 
 from src.config.load_env import ENV
-from src.config.settings import DIM, EMBEDDING_FIELD, TEXT_FIELD
+from src.config.settings import DIM, EMBEDDING_FIELD, TEXT_FIELD, AWS_REGION
 
 
 class OpensearchClient:
@@ -67,13 +67,7 @@ class AWSOpensearchClient(OpensearchClient):
     def __build_client():
         session = boto3.Session()
         credentials = session.get_credentials()
-        awsauth = AWS4Auth(
-            credentials.access_key,
-            credentials.secret_key,
-            "us-east-1",  # your region
-            "es",
-            session_token=getattr(credentials, "token", None)
-        )
+        awsauth = AWSV4SignerAuth(credentials, AWS_REGION, "es")
         print(f'awsauth: {awsauth}')
         opensearch_client = OpensearchVectorClient(
             endpoint=ENV.AWS_OPENSEARCH_ENDPOINT,
@@ -83,6 +77,8 @@ class AWSOpensearchClient(OpensearchClient):
             text_field=TEXT_FIELD,
             search_pipeline=ENV.OPENSEARCH_SEARCH_PIPELINE,
             method={"name": "hnsw", "space_type": "l2", "engine": "faiss", "parameters": {"ef_construction": 256, "m": 48}},
-            kwargs={"http_auth": awsauth, "use_ssl": True, "verify_certs": True, "timeout": 60}
+            aws_auth=awsauth,
+            use_ssl=True,
+            verify_certs=True
         )
         return opensearch_client

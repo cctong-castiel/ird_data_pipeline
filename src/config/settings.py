@@ -30,3 +30,5 @@ TOP_K = 3
 VECTOR_QUERY_MODE = VectorStoreQueryMode.HYBRID
 
 STORE_TYPE = "opensearch"  # "chroma" or "opensearch" or "aws_opensearch"
+
+AWS_REGION = "ap-northeast-1"
