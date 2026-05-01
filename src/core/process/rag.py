@@ -1,13 +1,12 @@
 from typing import List, Any, MutableMapping
 import json
-from prefect import task
+from prefect import task, get_run_logger
 from llama_index.core import VectorStoreIndex, Document
 from llama_index.core.base.base_retriever import BaseRetriever
 from src.initialize.init import (
     splitter, embedding_model, storage_context
 )
 from src.config.settings import TOP_K
-from src.config.settings import logger
 
 
 def _sanitize_metadata(md: MutableMapping) -> dict:
@@ -105,6 +104,9 @@ def rag_step(queries: List[str], docs_ird_case: List[Document], docs_pdf: List[D
         docs_ird_case (List[Document]): A list of Document objects representing IRD case contents.
         docs_pdf (List[Document]): A list of Document objects representing IRD PDF contents
     """
+
+    # logger
+    logger = get_run_logger()
 
     # create retriever
     retriever = process_rag(docs_ird_case, docs_pdf)
