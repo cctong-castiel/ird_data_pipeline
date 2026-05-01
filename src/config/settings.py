@@ -29,4 +29,4 @@ DIM = 768
 TOP_K = 3
 VECTOR_QUERY_MODE = VectorStoreQueryMode.HYBRID
 
-STORE_TYPE = "opensearch"  # "chroma" or "opensearch" or "aws_opensearch"
+STORE_TYPE = "chroma"  # "chroma" or "opensearch" or "aws_opensearch"

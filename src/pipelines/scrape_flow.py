@@ -1,7 +1,6 @@
 from prefect import flow, task
 from src.core.scrape.scraper import IrdCaseContentSpider
 from src.core.scrape.scraper import run_spider
-from src.core.scrape.scraper import scrape_step
 
 
 @task(name="scrape_step", task_run_name="scrape_ird_data_task", log_prints=True)
