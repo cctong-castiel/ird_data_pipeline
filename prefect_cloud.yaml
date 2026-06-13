@@ -21,6 +21,7 @@ deployments:
       job_variables:
         image: prefecthq/prefect:3-python3.11
         env:
+          GITHUB_ACCESS_TOKEN: "{{ $GITHUB_ACCESS_TOKEN }}"
           LLAMAINDEX_KEY: "{{ prefect.blocks.secret.llamaindex-key }}"
           OPENSEARCH_INITIAL_ADMIN_PASSWORD: "{{ prefect.blocks.secret.opensearch-initial-admin-passowrd }}"
           OPENSEARCH_INDEX_NAME: "{{ prefect.blocks.secret.opensearch-index-name }}"
@@ -43,6 +44,7 @@ deployments:
       job_variables:
         image: prefecthq/prefect:3-python3.11
         env:
+          GITHUB_ACCESS_TOKEN: "{{ $GITHUB_ACCESS_TOKEN }}"
           LLAMAINDEX_KEY: "{{ prefect.blocks.secret.llamaindex-key }}"
           OPENSEARCH_INITIAL_ADMIN_PASSWORD: "{{ prefect.blocks.secret.opensearch-initial-admin-passowrd }}"
           OPENSEARCH_INDEX_NAME: "{{ prefect.blocks.secret.opensearch-index-name }}"

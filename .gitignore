@@ -192,6 +192,22 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
+### --- IDE & Editor Settings --- ###
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# terraform
+infra/terraform/.terraform
+infra/terraform/terraform.tfstate
+infra/terraform/terraform.tfstate.backup
+infra/terraform/.terraform.lock.hcl
+infra/terraform/tfplan
+
 # others
 .DS_Store
 data/**/*

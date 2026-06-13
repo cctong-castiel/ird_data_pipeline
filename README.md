@@ -114,4 +114,4 @@ prefect deploy --prefect-file prefect_cloud.yaml
 
 Then run the blue command at the end of the output shown as below.
 
-![1777690232820](image/README/1777690232820.png)
+![1777690232820](assets/imgs/1777690232820.png)
