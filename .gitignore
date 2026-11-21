@@ -213,3 +213,4 @@ infra/terraform/tfplan
 data/**/*
 tests/output_files/**/*
 tests/experiments.ipynb
+assets/architecture/

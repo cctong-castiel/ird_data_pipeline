@@ -12,6 +12,11 @@ The pipeline is orchestrated using **Prefect**, streamlining three core stages:
 
 ---
 
+## 📐 Architecture
+![Prefect Cloud Pipeline Architecture](assets/imgs/arhitecture_gemini-4-neon.png)
+
+---
+
 ## 📂 Repository Structure
 
 ```text
